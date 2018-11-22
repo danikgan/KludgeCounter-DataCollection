@@ -36,7 +36,7 @@ public class useGitRepository {
             processBuilder.directory(new File(gitPath));
             process = processBuilder.start();
 
-            consoleOutput(process);
+            //consoleOutput(process);
 
             process.getOutputStream().close(); // close stdin of child
             process.waitFor();
