@@ -39,7 +39,8 @@ public class useGitRepository {
             consoleOutput(process);
 
             process.getOutputStream().close(); // close stdin of child
-        } catch (/*InterruptedException |*/ IOException e) {
+            process.waitFor();
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
             System.out.println("*** Error downloading from the specified git link: " + gitLink +".\n");
 
@@ -143,7 +144,7 @@ public class useGitRepository {
     // This finds the name of the downloaded repository, so that there's no need to specify manually
     private String repositoryName () {
         int gitLink_length = gitLink.length();
-        StringBuilder folderName = new StringBuilder("");
+        StringBuilder folderName = new StringBuilder();
 
         for (int i = gitLink_length-1; i > 0; i--) {
             char gitLink_char = gitLink.charAt(i);
