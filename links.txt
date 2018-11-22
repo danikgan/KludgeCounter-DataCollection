@@ -1,0 +1,3 @@
+https://git-wip-us.apache.org/repos/asf/ant-antlibs-dotnet.git
+https://git-wip-us.apache.org/repos/asf/ambari.git
+https://git-wip-us.apache.org/repos/asf/ant.git
