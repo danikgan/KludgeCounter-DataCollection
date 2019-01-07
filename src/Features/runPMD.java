@@ -3,7 +3,7 @@ package Features;
 import java.io.*;
 
 public class runPMD {
-    private String pmdVersion = "6.9.0";
+    private String pmdVersion = "6.10.0";
 
 //    private void pmdFunctions (String path) {
 //        // read PMD version
