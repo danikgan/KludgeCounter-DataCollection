@@ -1,3 +1,4 @@
-https://gitbox.apache.org/repos/asf/ant-antlibs-dotnet.git
-https://gitbox.apache.org/repos/asf/ant.git
-https://gitbox.apache.org/repos/asf/accumulo.git
+10 https://gitbox.apache.org/repos/asf/ant-antlibs-dotnet.git
+100 https://gitboxA.apache.org/repos/asf/ant.git
+50 https://gitboxA.apache.org/repos/asf/accumulo.git
+50 https://git-wip-us.apache.org/repos/asf/ambari.git

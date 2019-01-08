@@ -1,15 +1,15 @@
 # Script for my Research Project
 
 ## Description
-This script downloads commits at a particular time of the specified projects. It runs PMD over each instance of the commit, and saves the count in a XLSX document. Current version requires the correct input, otherwise the behaviour is undefined.
+This script downloads the specified number of commits of each project following the project GIT link from the TXT file taken as an input. It runs PMD over each commit, identifying the unique PMD alerts considering the changes between two consecutive files. At a final step, it records the information in XLSX format.
 
 ## Requirements
-1. Specify the path to which the repositories will be downloaded.
-2. At that path there must exist a "links.txt" file, which will contain the links to all the repositories, which will be used in the process.
-3. Specify the month and the year to which the process will backtrace.
+1. Create an input TXT file named "links.txt", where every line corresponds to a project, such as a line contains "n link.git", where 'n' is the number of commits to analyse, and 'link.git' is the Git link to the desired project.
+2. As you run the script, specify the path to the input TXT file. The output file will be created there, too.
+3. Wait for the script to complete. Do not delete created files until the script is complete. It will delete these files automatically.
 
-There will be created a file named "osp-records.xlsx" upon completion, which will contain all the counts of "quality alerts" discovered.
+There will be created a file named "records.xlsx" upon completion. Any temporary files will be removed automatically. For faster runtime, make sure to have stable and fast internet connection, and powerful computer.
 
-###### Current version of the code works on MacOS only.
+##### Current version of the code works on MacOS only.
 
-###### The root folder contains examples of the correct input file, named "links.txt", and the intended output file, named "osp-records.txt".
+##### The root folder contains examples of the correct input file, named "links.txt", and the intended output file, named "records.txt".
