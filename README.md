@@ -9,3 +9,7 @@ This script downloads commits at a particular time of the specified projects. It
 3. Specify the month and the year to which the process will backtrace.
 
 There will be created a file named "osp-records.xlsx" upon completion, which will contain all the counts of "quality alerts" discovered.
+
+###### Current version of the code works on MacOS only.
+
+###### The root folder contains examples of the correct input file, named "links.txt", and the intended output file, named "osp-records.txt".
