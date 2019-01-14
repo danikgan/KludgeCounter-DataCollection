@@ -59,7 +59,12 @@ public class AnalysedLink {
         record.setProjectName(projectName);
 
         String fileName_LC = commitsListTXT_string;
-        String[] commandListCommits = {"git", "log", "-" + commitQuantity};
+        String[] commandListCommits;
+        if (commitQuantity==0){ // means download all commits
+            commandListCommits = new String[] {"git", "log"};
+        } else {
+            commandListCommits = new String[] {"git", "log", "-" + commitQuantity};
+        }
         new UseTerminal(commandListCommits, fullPath, fileName_LC);
 
         System.out.println("Reading " + fileName_LC + "...");

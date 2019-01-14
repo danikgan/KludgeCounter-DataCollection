@@ -3,7 +3,13 @@ package features.analyse;
 import java.io.*;
 
 public class ApplyPMD {
-    private String versionPMD = "6.10.0"; // TODO get this name by default
+    private static String versionPMD = "6.10.0";
+
+    public static void setVersionPMD(String versionPMD) {
+        ApplyPMD.versionPMD = versionPMD;
+    }
+
+    public ApplyPMD() { }
 
     public ApplyPMD(String projectName, String gitPath) {
         //String command = "pmd-bin-6.10.0/bin/run.sh pmd -d projectName -R rulesets/java/quickstart.xml";

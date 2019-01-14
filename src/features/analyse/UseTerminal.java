@@ -9,7 +9,9 @@ public class UseTerminal {
         try {
             //String[] command = {"git", "checkout", checkoutNumber};
             ProcessBuilder processBuilder = new ProcessBuilder(command);
-            processBuilder.directory(new File(gitPath));
+            if (!gitPath.equals("")){
+                processBuilder.directory(new File(gitPath));
+            }
             process = processBuilder.start();
 
 //            System.out.println("Checking out: " + checkoutNumber);

@@ -1,0 +1,17 @@
+commit f4fd2cdbf712b632d649840d071acc1418ceaa29
+Author: Stefan Bodewig <stefan.bodewig@innoq.com>
+Date:   Mon Dec 17 10:15:28 2018 +0100
+
+    moved to gitbox
+
+commit ff6fd7a2f8db997f4b1b566426785c726ea63ffe
+Author: Stefan Bodewig <bodewig@apache.org>
+Date:   Tue Jun 13 13:17:02 2017 +0200
+
+    DOAP file now lives in ant-site
+
+commit 08a0f37ce3783c44961cc448763be8300dc01e09
+Author: Stefan Bodewig <bodewig@apache.org>
+Date:   Thu Jun 1 19:56:23 2017 +0200
+
+    ensure the next release, if any, uses proper ivy coordinates

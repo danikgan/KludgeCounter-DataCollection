@@ -1,9 +1,16 @@
 import features.*;
+import features.analyse.ApplyPMD;
+import features.analyse.UseTerminal;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
+
+import static features.analyse.ApplyPMD.setVersionPMD;
 
 public class Main {
     private static boolean failureToProceed = false;
@@ -22,6 +29,8 @@ public class Main {
         System.out.println("Hello World!\n");
         askGitPath();
 //        gitPath += "Desktop/tests";
+        identifyPMD();
+
         preProcessing();
         if (!failureToProceed) {
             analysing();
@@ -45,6 +54,34 @@ public class Main {
         gitPath += scan.nextLine();
     }
 
+    private static void identifyPMD() {
+        String[] command = {"ls"};
+        String fileReader = "files-list.txt";
+        new UseTerminal(command, "", fileReader);
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileReader));
+            String line = bufferedReader.readLine();
+            String identifier = "pmd-bin-";
+            while (line != null) {
+                if (line.length()>identifier.length()) {
+                    if (line.substring(0,identifier.length()).equals(identifier)) {
+//                        System.out.println("PMD found! " + line.substring(identifier.length(), line.length()));
+                        new ApplyPMD();
+                        setVersionPMD(line.substring(identifier.length()));
+                    }
+                }
+
+                line = bufferedReader.readLine();
+            }
+
+            bufferedReader.close();
+        } catch (IOException e) {
+            System.out.println("*** Main: Error finding PMD in the repository.");
+            e.printStackTrace();
+        }
+    }
+
     private static void preProcessing() { // Pre-processing includes the reading of links and quantity of commits
         System.out.println("\nPre-processing...");
         ReadTXTInput readTXTInput = new ReadTXTInput(gitPath);
@@ -55,7 +92,7 @@ public class Main {
             System.out.println("*** Failed to proceed. Check the txt file.");
             failureToProceed = true;
 
-        } System.out.println("");
+        } System.out.println();
     }
 
     private static void analysing() { // Analysing includes downloading the links pre-processed, and getting the unique PMD alerts
