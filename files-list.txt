@@ -1,9 +1,0 @@
-COMP0138.iml
-README.md
-files-list.txt
-libs
-links.txt
-out
-pmd-bin-6.10.0
-records.xlsx
-src

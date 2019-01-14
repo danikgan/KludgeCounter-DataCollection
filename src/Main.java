@@ -1,12 +1,10 @@
 import features.*;
 import features.analyse.ApplyPMD;
 import features.analyse.UseTerminal;
+import features.utilities.DeleteFiles;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -80,6 +78,8 @@ public class Main {
             System.out.println("*** Main: Error finding PMD in the repository.");
             e.printStackTrace();
         }
+
+        new DeleteFiles(new File(fileReader));
     }
 
     private static void preProcessing() { // Pre-processing includes the reading of links and quantity of commits
