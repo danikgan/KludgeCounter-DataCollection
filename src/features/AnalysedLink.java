@@ -132,41 +132,6 @@ public class AnalysedLink {
         record.setUniqueAlerts_count(uniqueAlerts_count);
     }
 
-//    /** Applies PMD in such way that:
-//          *
-//          * 1. If it's the first iteration of the loop: records the current status of checkout (starts with the earliest)
-//          * 2.
-//          * 3.
-//          */
-//    private void usePMDonCommit() {
-//        String commitNumber_prev = ""; // this is going to be "next" commit, cuz it goes from latest to earliest
-//        Collections.reverse(record.getCommitNumber()); // reverse
-//        for (String commitNumber:record.getCommitNumber()) {
-//            if (commitNumber_prev.equals("")) {
-//                System.out.println("First commit.");
-//                commitNumber_prev = commitNumber; // initial status of checkout saved
-//            } System.out.println("This checkout: " + commitNumber);
-//
-//            // checking out
-//            String[] commandCheckout = {"git", "checkout", commitNumber};
-//            String fullPath = gitPath + "/" + projectName;
-//            new UseTerminal(commandCheckout, fullPath, "");  // fileName zero means no record
-//
-//            System.out.println("Applying PMD...");
-//            new ApplyPMD(projectName, gitPath);
-//
-//
-//            String[] commandGitDiff = {"git", "diff", commitNumber_prev, commitNumber};
-//            new UseTerminal(commandGitDiff, fullPath, "git-diff.txt");
-//            commitNumber_prev = commitNumber; // from earliest to latest
-//        }
-//
-//        // git diff to find differences
-//        // check the differences in the txt file
-//        // add unique quality alerts as a linked list for each alert
-//        // the size will reflect the number of quality alerts to be used in the analysis
-//    }
-
     private void deleteTemporaryFiles() {
         System.out.println("Deleting: " + projectName);
         new DeleteFiles(new File(fullPath)); // tools.DeleteFiles deletes all files within the directory

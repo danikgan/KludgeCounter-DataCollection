@@ -20,7 +20,8 @@ public class Main {
     // analysing each link
     private static LinkedList<Records> records = new LinkedList<>();
 
-    private static String gitPath = "/Users/" + System.getProperty("user.name") + "/";
+//    private static String gitPath = "/Users/" + System.getProperty("user.name") + "/";
+    private static String gitPath;
 
     public static void main(String[] args) {
 
@@ -47,6 +48,28 @@ public class Main {
 
     private static void askGitPath() {
         Scanner scan = new Scanner(System.in);
+
+        System.out.println("Are you on MacOS (M), Linux (L) or Windows (W)?" +
+                "\n(E) for else:" +
+                "\t(Hint: your operating system is " + System.getProperty("os.name") + ".)");
+        char operatingSystem = scan.nextLine().charAt(0);
+        switch (operatingSystem) {
+            case 'M': case 'm': gitPath = "/Users/" + System.getProperty("user.name") + "/"; break;
+            case 'L': case 'l': gitPath = "/home/" + System.getProperty("user.name") + "/"; break;
+            case 'W': case 'w': gitPath = ""; break;
+            default: gitPath = "";
+        }
+
+//        String operatingSystem = System.getProperty("os.name").toLowerCase();
+//        System.out.println("OS: " + operatingSystem);
+//        switch (operatingSystem) {
+//            case "osx": gitPath = "/Users/" + System.getProperty("user.name") + "/"; break;
+//            case "nix": gitPath = "/home/" + System.getProperty("user.name") + "/"; break;
+//            case "win": gitPath = "/"; break;
+//            default: gitPath = "/";
+//        }
+
+
         System.out.println("Specify the path for the text document, containing links and their corresponding number of commits to download. State the folders after: ");
         System.out.printf(gitPath);
         gitPath += scan.nextLine();
