@@ -27,7 +27,7 @@ public class Main {
 
         System.out.println("Hello World!\n");
         askGitPath();
-//        gitPath += "Desktop/tests";
+//        gitPath = "/Users/" + System.getProperty("user.name") + "/Desktop";
         identifyPMD();
 
         preProcessing();

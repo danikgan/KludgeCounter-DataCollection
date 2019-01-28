@@ -2,13 +2,16 @@ package features.analyse;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.LinkedList;
-
+//TODO Implement a line checker, so that the lines read == lines of the file
 public class ComparePMDandDIFF {
     // temporary, needed for calculations
 //    private LinkedList<Integer> lines_temp = new LinkedList<>();
     private int lowerBound_temp = 0;
     private int upperBound_temp = 0;
+    private LinkedList<Integer> linesOfCode_temp = new LinkedList<>();
 
     // passed from the caller
     private String fullPath;
@@ -35,8 +38,13 @@ public class ComparePMDandDIFF {
 
             String identifier = "diff --git ";
             String identifier_lines = "@@ ";
+            String identifier_added = "+ ";
+            String identifier_removed = "- ";
+            int counterTODELETE = 0;
             while (line != null) {
+                boolean line_changed = false;
                 StringBuilder stringBuilder_line = new StringBuilder(line);
+//                System.out.println("L: " + line);
 
                 // identifying git-diff through diff --git
                 if (stringBuilder_line.length() >= 11) { // avoids out of bound error
@@ -52,7 +60,7 @@ public class ComparePMDandDIFF {
                 }
 
                 // identifying lower and upper bounds through @@
-                if (stringBuilder_line.length() >= 3 && !filePath.equals("")) {
+                if (stringBuilder_line.length() >= 3) {
                     if (stringBuilder_line.substring(0,3).equals(identifier_lines)) {
 //                        System.out.println("filePath: " + filePath);
                         stringBuilder_line.delete(0,stringBuilder_line.indexOf("+")+1);
@@ -64,7 +72,7 @@ public class ComparePMDandDIFF {
                             upperBound_temp = lowerBound_temp + Integer.valueOf(stringBuilder_line.toString().substring(index_temp+1, stringBuilder_line.indexOf(" ")));
 
                             if (upperBound_temp>lowerBound_temp && upperBound_temp>0){
-                                upperBound_temp -= 1; // deletes one extra line (unnecessary)
+                                upperBound_temp -= 1; // deletes one extra (unnecessary) line
                             }
 
 //                            System.out.println("LB: " + lowerBound_temp);
@@ -76,13 +84,80 @@ public class ComparePMDandDIFF {
                         }
 
 //                        System.out.println("Finding pmd alerts...");
-                        findInPMD(readerFileName_pmdAlerts);
+                        if (upperBound_temp > 0 || lowerBound_temp > 0) {
+//                            System.out.println("Getting changes...");
+                            line = bufferedReader.readLine(); // go to the next line
+//                            stringBuilder_line = new StringBuilder(line);
 
-                        filePath = ""; // resetting
+                            int counter = 0;
+                            while (line != null) {
+                                counterTODELETE++;
+//                                stringBuilder_line = new StringBuilder(line);
+
+                                if (line.length() >= 11) {
+                                    // when git diff is found again
+                                    if (line.substring(0, 11).equals(identifier)) {
+//                                        System.out.println("....Exiting....");
+//                                        System.out.println(line);
+                                        line_changed = true;
+                                        break;
+                                    }
+                                }
+
+                                if (line.length() >= 3) {
+                                    // when @@ is found again
+                                    if (line.substring(0, 3).equals(identifier_lines)) {
+//                                        System.out.println("....Exiting....");
+//                                        System.out.println(counterTODELETE);
+//                                        System.out.println(line);
+                                        line_changed = true;
+                                        break;
+                                    }
+                                }
+
+                                if (line.length() >= 2) {
+                                    if (line.substring(0, 2).equals(identifier_added)) {
+                                        // saving the correct number
+                                        int number_temp = lowerBound_temp + counter;
+//                                        System.out.println("Adding this number: " + number_temp);
+                                        linesOfCode_temp.add(number_temp);
+//                                        System.out.println("This line added: " + linesOfCode_temp.getLast());
+                                    }
+                                }
+
+                                if (line.length() >= 2) {
+                                    if (!line.substring(0, 2).equals(identifier_removed)) {
+                                        counter++;
+                                    }
+                                } else {
+                                    counter++;
+                                }
+
+
+                                try {
+                                    line = bufferedReader.readLine(); // go to the next line
+                                } catch (Exception e) {
+                                    System.out.println("*** ComparePMDandDIFF: Error reading amends in " +  readerFileName_gitDiff + ".");
+                                    e.printStackTrace();
+                                }
+//                                System.out.println((counter + lowerBound_temp) + " " + stringBuilder_line.toString());
+//                                System.out.println(line);
+                            }
+                        }
+
+//                        System.out.println("LINE: " + line);
+//                        System.out.println("Entering PMD txt...");
+                        findInPMD(readerFileName_pmdAlerts);
+                        // resetting
+//                        System.out.println("LC: " + linesOfCode_temp);
+                        linesOfCode_temp.clear();
+                        filePath = "";
                     }
                 }
 
-                line = bufferedReader.readLine();
+                if (!line_changed) {
+                    line = bufferedReader.readLine();
+                }
             }
 
             bufferedReader.close();
@@ -100,22 +175,27 @@ public class ComparePMDandDIFF {
             String line = bufferedReader.readLine();
 
             String identifier = fullPath + filePath;
+//            System.out.println("ID: " + identifier);
             StringBuilder uniqueAlerts_SB = new StringBuilder(""); // more efficient than string concatenation
 //            lines_temp.clear(); // making it empty
             while (line != null){
-                if (line.length() >= identifier.length()) { // to avoid errors while reading a line
+                // to avoid errors while reading a line + to check this is a file, not a rep only
+                if (line.length() > identifier.length() && identifier.contains(".")) {
                     if (identifier.equals(line.substring(0, identifier.length()))) {
                         // only add lines which are between the bounds of update
                         int lineOfPMDAlert_temp = findLine(line);
                         if (lineOfPMDAlert_temp>=lowerBound_temp && lineOfPMDAlert_temp<=upperBound_temp){
 //                            System.out.println("LB: " + lowerBound_temp + " UB: " + upperBound_temp + " Line: " + lineOfPMDAlert_temp);
-                            if (uniqueAlerts_SB.toString().equals("")) {
-                                uniqueAlerts_SB.append(line);
-                            } else {
-                                uniqueAlerts_SB.append("\n").append(line);
-                            }
+                            if (linesOfCode_temp.contains(lineOfPMDAlert_temp)){
+//                                System.out.println("Added: " + lineOfPMDAlert_temp + " " + identifier);
+                                if (uniqueAlerts_SB.toString().equals("")) {
+                                    uniqueAlerts_SB.append(line);
+                                } else {
+                                    uniqueAlerts_SB.append("\n").append(line);
+                                }
 
-                            uniqueAlerts_count++; // added to uniqueAlerts_count
+                                uniqueAlerts_count++; // added to uniqueAlerts_count
+                            }
                         }
                     }
                 }
@@ -133,16 +213,27 @@ public class ComparePMDandDIFF {
             System.out.println("*** ComparePMDandDIFF: Error reading " + readerFileName_pmdAlerts + ".");
             e.printStackTrace();
         }
+
+        //TODO make lower && upper bound zero here
+        lowerBound_temp = 0;
+        upperBound_temp = 0;
     }
 
     // finding the alert line in PMD txt file
     private int findLine(String line) {
-        StringBuilder line_SB = new StringBuilder(line);
+        try {
+            StringBuilder line_SB = new StringBuilder(line);
 
-        line_SB.delete(0, line.indexOf(':')+1); // removing before the int
-        line_SB.delete(line_SB.indexOf(":"), line_SB.toString().length()+1); // removing after the int
+            line_SB.delete(0, line.indexOf(':')+1); // removing before the int
+            line_SB.delete(line_SB.indexOf(":"), line_SB.toString().length()+1); // removing after the int
 
 //        System.out.println("Line: " + line_SB.toString());
-        return Integer.valueOf(String.valueOf(line_SB));
+            return Integer.valueOf(String.valueOf(line_SB));
+        } catch (Exception e) {
+            System.out.println("*** ComparePMDandDIFF: Error finding the line in: " + line + ".");
+            e.printStackTrace();
+
+            return -1; // as an error
+        }
     }
 }

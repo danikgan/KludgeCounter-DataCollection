@@ -35,8 +35,14 @@ public class AnalysedLink {
         this.gitPath = gitPath;
         this.commitQuantity = commitQuantity;
 
-        DownloadGit downloadGit = new DownloadGit();
-        projectName = downloadGit.DownloadGit(link, gitPath);
+        if (commitQuantity < 0) {
+            projectExists = false;
+            projectName = null;
+        } else {
+            DownloadGit downloadGit = new DownloadGit();
+            projectName = downloadGit.DownloadGit(link, gitPath);
+        }
+
         if (projectName != null) {
             this.fullPath = gitPath + "/" + projectName; // used throughout the class
 
@@ -135,11 +141,11 @@ public class AnalysedLink {
     private void deleteTemporaryFiles() {
         System.out.println("Deleting: " + projectName);
         new DeleteFiles(new File(fullPath)); // tools.DeleteFiles deletes all files within the directory
-
-        // delete txt temporary files
-        new DeleteFiles(new File(gitDiffTXT_string));
+//
+//        // delete txt temporary files
+//        new DeleteFiles(new File(gitDiffTXT_string));
         new DeleteFiles(new File(commitsListTXT_string));
-        new DeleteFiles(new File(pmdAlertsTXT_string));
+//        new DeleteFiles(new File(pmdAlertsTXT_string));
     }
 
     // used by Main
