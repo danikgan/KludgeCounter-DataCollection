@@ -143,9 +143,9 @@ public class AnalysedLink {
         new DeleteFiles(new File(fullPath)); // tools.DeleteFiles deletes all files within the directory
 //
 //        // delete txt temporary files
-//        new DeleteFiles(new File(gitDiffTXT_string));
+        new DeleteFiles(new File(gitDiffTXT_string));
         new DeleteFiles(new File(commitsListTXT_string));
-//        new DeleteFiles(new File(pmdAlertsTXT_string));
+        new DeleteFiles(new File(pmdAlertsTXT_string));
     }
 
     // used by Main
