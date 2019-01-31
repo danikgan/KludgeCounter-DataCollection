@@ -2,7 +2,6 @@ package features;
 
 import features.utilities.DeleteFiles;
 import features.utilities.TemporaryFiles;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -166,12 +165,4 @@ public class SaveRecordsXLSX {
         }
 
     }
-//    private String randomStringGeneration() {
-//        int length = 10;
-//        boolean useLetters = true;
-//        boolean useNumbers = true;
-//        String generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
-//
-//        return generatedString;
-//    }
 }
