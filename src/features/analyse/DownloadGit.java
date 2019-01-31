@@ -1,5 +1,7 @@
 package features.analyse;
 
+import features.utilities.FindRepositoryName;
+
 import java.io.File;
 import java.io.*;
 //import org.apache.commons.io.FileUtils;
@@ -12,7 +14,6 @@ import java.io.*;
 
 public class DownloadGit {
     private String projectName = "";
-
     private String link = "";
 
     public String DownloadGit(String link, String gitPath) { // download following the git link
@@ -42,7 +43,7 @@ public class DownloadGit {
         } finally { if (process != null) { process.destroy(); } }
 
         // checking the repository exists
-        projectName = String.valueOf(findRepositoryName());
+        projectName = new FindRepositoryName(link).getFolderName();
         File f = new File(gitPath + "/" + projectName);
         if (f.exists() && f.isDirectory()) {
             return projectName;
@@ -51,27 +52,5 @@ public class DownloadGit {
                     "Please, check this link: " + link + ".");
             return null;
         }
-    }
-
-    private String findRepositoryName() { // This finds the name of the downloaded repository, so that there's no need to specify manually
-        int gitLink_length = link.length();
-        StringBuilder folderName = new StringBuilder();
-
-        for (int i = gitLink_length-1; i > 0; i--) {
-            char gitLink_char = link.charAt(i);
-
-            if (gitLink_char == '/') { break; }
-            else { folderName.insert(0, gitLink_char); }
-
-            // remove the .git at the end
-            String temp_gitLink_comparison = folderName.toString();
-            if (temp_gitLink_comparison.equals(".git")) {
-                folderName.delete(0,4);
-                //System.out.println("Deleted: " + findRepositoryName + ".");
-            }
-        }
-
-        //System.out.println("Folder name: " + String.valueOf(findRepositoryName));
-        return String.valueOf(folderName);
     }
 }

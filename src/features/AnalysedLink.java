@@ -2,6 +2,7 @@ package features;
 
 import features.analyse.*; // additional classes for AnalysedLink
 import features.utilities.DeleteFiles;
+import features.utilities.TemporaryFiles;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -16,25 +17,31 @@ import java.util.LinkedList;
  */
 
 public class AnalysedLink {
+    // returned to main
     private Records record = new Records();
     private boolean projectExists = true;
-
-    private String gitDiffTXT_string = "git-diff.txt";
-    private String commitsListTXT_string = "commits-list.txt";
-    private String pmdAlertsTXT_string = "pmd-alerts.txt";
-
+    // various file created for the execution
+    private String gitDiffTXT_string = TemporaryFiles.analysing.GITDIFF.getString();
+    private String commitsListTXT_string = TemporaryFiles.analysing.COMMITSLIST.getString();
+    private String pmdAlertsTXT_string = TemporaryFiles.analysing.PMDALERTS.getString();
+    // attributes needed
     private String projectName;
     private String gitPath;
     private String fullPath;
     private int commitQuantity;
-
+    // adding alerts one-by-one for each commit
     private LinkedList<String> uniqueAlerts = new LinkedList<>();
     private LinkedList<Integer> uniqueAlerts_count = new LinkedList<>();
+    // constructor
 
-    public AnalysedLink(String gitPath, String link, int commitQuantity) {
+    public AnalysedLink(String gitPath, int commitQuantity) {
+        // passed from main
         this.gitPath = gitPath;
         this.commitQuantity = commitQuantity;
-
+        // launching the analyses
+    }
+    public void analysing(String link) {
+        // in case commit quantity is negative do not proceed
         if (commitQuantity < 0) {
             projectExists = false;
             projectName = null;
@@ -42,7 +49,7 @@ public class AnalysedLink {
             DownloadGit downloadGit = new DownloadGit();
             projectName = downloadGit.DownloadGit(link, gitPath);
         }
-
+        // project was downloaded
         if (projectName != null) {
             this.fullPath = gitPath + "/" + projectName; // used throughout the class
 
@@ -56,11 +63,11 @@ public class AnalysedLink {
         } else {
             projectExists = false;
         }
-
+        // exiting analysis of the current project
         System.out.println("Project Exists: " + projectExists);
         System.out.println("Projected assessed.\n");
     }
-
+    // gets initial information on the project repository
     private void setProjectInformation() {
         record.setProjectName(projectName);
 
@@ -84,7 +91,7 @@ public class AnalysedLink {
             projectExists = false;
         }
     }
-
+    // main getString process
     /** This is how usePMDonCommit() works:
      *
      * 1. Checks if it's the first iteration of the loop
@@ -134,10 +141,9 @@ public class AnalysedLink {
         }
 
         // after all uniqueAlerts and uniqueAlerts_count were collected
-        record.setUniqueAlerts(uniqueAlerts);
-        record.setUniqueAlerts_count(uniqueAlerts_count);
+        saveData();
     }
-
+    // delete temporary files
     private void deleteTemporaryFiles() {
         System.out.println("Deleting: " + projectName);
         new DeleteFiles(new File(fullPath)); // tools.DeleteFiles deletes all files within the directory
@@ -147,12 +153,34 @@ public class AnalysedLink {
         new DeleteFiles(new File(commitsListTXT_string));
         new DeleteFiles(new File(pmdAlertsTXT_string));
     }
-
-    // used by Main
+    // used by Main to check if project exists or there were errors
     public boolean isProjectExists() {
         return projectExists;
+//        try {
+//            return projectExists;
+//        } catch (Exception e ) {
+//            System.out.println("*** AnalysedLink: Error returning projectExists.");
+//            e.printStackTrace();
+//            return false;
+//        }
     }
+    // return the data of the current record
     public Records getRecord() {
         return record;
+    }
+    // in case of the urgent exit, save the current errors found
+    public void saveData() {
+        record.setUniqueAlerts(uniqueAlerts);
+        record.setUniqueAlerts_count(uniqueAlerts_count);
+    }
+    // needed for restoring the previous execution
+    public String getGitDiffTXT_string() {
+        return gitDiffTXT_string;
+    }
+    public String getCommitsListTXT_string() {
+        return commitsListTXT_string;
+    }
+    public String getPmdAlertsTXT_string() {
+        return pmdAlertsTXT_string;
     }
 }

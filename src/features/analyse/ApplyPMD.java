@@ -1,11 +1,14 @@
 package features.analyse;
 
+import features.utilities.TemporaryFiles;
+
 import java.io.*;
 
 public class ApplyPMD {
     private static String versionPMD = "6.10.0";
 
     public static void setVersionPMD(String versionPMD) {
+        System.out.println("PMD version: " + versionPMD);
         ApplyPMD.versionPMD = versionPMD;
     }
 
@@ -29,7 +32,7 @@ public class ApplyPMD {
             BufferedReader bufferedReader = new BufferedReader(reader);
             String line;
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter("pmd-alerts.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(TemporaryFiles.analysing.PMDALERTS.getString()));
             while ((line = bufferedReader.readLine()) != null) {
 //                System.out.println(line); // the output is here
                 writer.write(line);

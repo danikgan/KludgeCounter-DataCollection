@@ -230,9 +230,8 @@ public class ComparePMDandDIFF {
 //        System.out.println("Line: " + line_SB.toString());
             return Integer.valueOf(String.valueOf(line_SB));
         } catch (Exception e) {
-            System.out.println("*** ComparePMDandDIFF: Error finding the line in: " + line + ".");
-            e.printStackTrace();
-
+            System.out.println("*** ComparePMDandDIFF: Error finding the line in: \n" + line + "\n");
+//            e.printStackTrace();
             return -1; // as an error
         }
     }
