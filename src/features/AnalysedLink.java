@@ -33,7 +33,6 @@ public class AnalysedLink {
     private LinkedList<String> uniqueAlerts = new LinkedList<>();
     private LinkedList<Integer> uniqueAlerts_count = new LinkedList<>();
     // constructor
-
     public AnalysedLink(String gitPath, int commitQuantity) {
         // passed from main
         this.gitPath = gitPath;
@@ -101,16 +100,13 @@ public class AnalysedLink {
      * 3. Record alerts in PMD txt
      */
     private void usePMDonCommit() {
-        // there are no alerts for the first commit
-        uniqueAlerts.add("N/A");
-        uniqueAlerts_count.add(-1);
-
+//        // there are no alerts for the first commit
+//        uniqueAlerts.add("N/A");
+//        uniqueAlerts_count.add(-1);
         String commitNumber_next = ""; // this is going to be "next" commit, cuz it goes from latest to earliest
-
         int i_temp = 1; // to keep track of checkouts during runtime
         for (String commitNumber:record.getCommitNumber()) {
             System.out.println(i_temp + ". This checkout: " + commitNumber);
-
             // checking for the first iteration
             if (commitNumber_next.equals("") || commitNumber_next.equals(commitNumber)) {
 //                System.out.println("First commit.");
@@ -125,7 +121,6 @@ public class AnalysedLink {
                 uniqueAlerts.add(comparePMDandDIFF.getUniqueAlerts()); // add multiple strings, per commit
                 uniqueAlerts_count.add(comparePMDandDIFF.getUniqueAlerts_count()); // add one value, per commit
             }
-
             // do not more operations on the last commit as it is useless
             if (!commitNumber.equals(record.getCommitNumber().getLast())) { // checking if it's the last commit
                 String[] commandCheckout = {"git", "checkout", commitNumber};
@@ -135,11 +130,9 @@ public class AnalysedLink {
 //                System.out.println("Applying PMD...");
                 new ApplyPMD(projectName, gitPath);
             }
-
             i_temp++;
             commitNumber_next = commitNumber; // from latest to earliest
         }
-
         // after all uniqueAlerts and uniqueAlerts_count were collected
         saveData();
     }
@@ -156,13 +149,6 @@ public class AnalysedLink {
     // used by Main to check if project exists or there were errors
     public boolean isProjectExists() {
         return projectExists;
-//        try {
-//            return projectExists;
-//        } catch (Exception e ) {
-//            System.out.println("*** AnalysedLink: Error returning projectExists.");
-//            e.printStackTrace();
-//            return false;
-//        }
     }
     // return the data of the current record
     public Records getRecord() {
@@ -172,15 +158,5 @@ public class AnalysedLink {
     public void saveData() {
         record.setUniqueAlerts(uniqueAlerts);
         record.setUniqueAlerts_count(uniqueAlerts_count);
-    }
-    // needed for restoring the previous execution
-    public String getGitDiffTXT_string() {
-        return gitDiffTXT_string;
-    }
-    public String getCommitsListTXT_string() {
-        return commitsListTXT_string;
-    }
-    public String getPmdAlertsTXT_string() {
-        return pmdAlertsTXT_string;
     }
 }
