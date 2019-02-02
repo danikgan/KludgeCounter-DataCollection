@@ -1,10 +1,10 @@
-import features.AnalysedLink;
-import features.ReadTXTInput;
-import features.Records;
-import features.SaveRecordsXLSX;
-import features.preprocessing.IdentifyOS;
-import features.preprocessing.IdentifyPMD;
-import features.preprocessing.PreviousStatus;
+import first.AnalysedLink;
+import first.ReadTXTInput;
+import first.Records;
+import first.SaveRecordsXLSX;
+import first.preprocessing.IdentifyOS;
+import first.preprocessing.IdentifyPMD;
+import first.preprocessing.PreviousStatus;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -24,7 +24,7 @@ public class GitPMDAnalyser {
     private AnalysedLink analysedLink;
     private PreviousStatus previousStatus;
     // Main method
-    public GitPMDAnalyser() {
+    GitPMDAnalyser() {
         try {
             // register Message as shutdown hook
             Runtime.getRuntime().addShutdownHook(new Termination());
