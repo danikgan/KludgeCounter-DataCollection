@@ -20,6 +20,7 @@ public class AnalysedLink {
     // returned to main
     private Records record = new Records();
     private boolean projectExists = true;
+//    private boolean projectFinished = false;
     // various file created for the execution
     private String gitDiffTXT_string = TemporaryFiles.analysing.GITDIFF.getString();
     private String commitsListTXT_string = TemporaryFiles.analysing.COMMITSLIST.getString();
@@ -56,7 +57,7 @@ public class AnalysedLink {
             setProjectInformation();
             System.out.println("Applying PMD...");
             usePMDonCommit();
-
+//            projectFinished = true;
             // deleting the temporary files
             deleteTemporaryFiles();
         } else {
@@ -106,6 +107,10 @@ public class AnalysedLink {
         String commitNumber_next = ""; // this is going to be "next" commit, cuz it goes from latest to earliest
         int i_temp = 1; // to keep track of checkouts during runtime
         for (String commitNumber:record.getCommitNumber()) {
+//            // if the last commit was analysed, then the analysis were finished
+//            if (i_temp-1==record.getCommitNumber().size()){
+//                projectFinished = true;
+//            }
             System.out.println(i_temp + ". This checkout: " + commitNumber);
             // checking for the first iteration
             if (commitNumber_next.equals("") || commitNumber_next.equals(commitNumber)) {
@@ -159,4 +164,8 @@ public class AnalysedLink {
         record.setUniqueAlerts(uniqueAlerts);
         record.setUniqueAlerts_count(uniqueAlerts_count);
     }
+//    // needed not to duplicate the project add in the GitPMDAnalyser at abrupt termination
+//    public boolean isProjectFinished() {
+//        return projectFinished;
+//    }
 }
