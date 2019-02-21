@@ -1,6 +1,5 @@
 package second.process;
 
-import first.Records;
 import first.utilities.TemporaryFiles;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -13,6 +12,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+/** Reads all projects present in records.xlsx
+ * Assumes no prior knowledge.
+ */
 public class FindProjects {
     LinkedList<String> projectNames = new LinkedList<>();
     public FindProjects(String inputPath) {
@@ -43,6 +45,8 @@ public class FindProjects {
         // remove duplicate data
         Set<String> set = new HashSet<>(projectNames); // sets removed duplicates
         projectNames = new LinkedList<>(set);
+        // Close the workbook
+        workbook.close();
     }
     // return search results
     public LinkedList<String> getProjectNames() {

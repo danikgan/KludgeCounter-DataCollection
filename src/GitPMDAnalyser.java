@@ -50,7 +50,13 @@ public class GitPMDAnalyser {
         // getting the path to the text input file
         System.out.println("Specify the path for the text document, containing links and their corresponding number of commits to download. State the folders after: ");
         System.out.printf(gitPath);
-        gitPath += scan.nextLine();
+        String temp_userInput = scan.nextLine();
+        // checking there is no extra "/" in the user answer
+        if (temp_userInput.charAt(temp_userInput.length()-1) == '/') {
+            gitPath += temp_userInput.substring(0, temp_userInput.length()-1);
+        } else {
+            gitPath += temp_userInput;
+        }
     }
     // reading the input file, doing auto-detections
     private void preProcessing() { // Pre-processing includes the reading of links and quantity of commits

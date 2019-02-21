@@ -1,7 +1,9 @@
 import first.preprocessing.IdentifyOS;
 import first.utilities.TemporaryFiles;
 import second.preprocessing.CheckInputExists;
-import second.process.FindProjects;
+import second.process.*;
+import second.process.data.ProjectsData;
+import second.process.data.Tokens;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -18,6 +20,12 @@ class FindBugs {
      *          read attributes from the JSON
      *          save
      * save all info collected (record to separate XLSX or the same?)
+     *
+     * 1. FindProjects
+     * 2. GetProjectInfo
+     * 3. CommentTokenisation
+     * 4. BugzillaChecker
+     * 5. BugzillaLaunch
      */
     FindBugs() {
         String inputPath = askInput(); // getting the path to the input file
@@ -27,47 +35,95 @@ class FindBugs {
             System.out.println("Finding existing projects...");
             LinkedList<String> projects = new FindProjects(inputPath).getProjectNames();
             if (projects.size() > 0) {
-                askWhichProjectToAnalyse(projects);
+                // it will execute information retrieval upon answering
+                String projectSelected = askWhichProjectToAnalyse(projects); // returns projects' info collected
+                // saving returned data
+                LinkedList<ProjectsData> projectsData = new LinkedList<>();
+                GetProjectInfo getProjectInfo;
+                try {
+                    if (projectSelected.equals("A L L")) {
+                        getProjectInfo = new GetProjectInfo(inputPath, projects); // all projects
+                    } else {
+                        getProjectInfo = new GetProjectInfo(inputPath, projectSelected); // only one project
+                    }
+                    // gets additional information from the records.xlsx file
+                    projectsData = getProjectInfo.getProjectsData();
+//                    printProjects(projectsData);
+                    for (ProjectsData projectData:projectsData) {
+                        System.out.println("Project: " + projectData.getProject());
+                        // tokenise
+                        LinkedList<Tokens> listTokens = new CommentTokenisation(projectData).getListTokens();
+                        // check if good for Bugzilla
+                        new BugzillaChecker(listTokens);
+                        // accessing REST and Bugzilla
+                        new BugzillaLaunch(listTokens);
+                        for (Tokens tokens:listTokens) {
+                            System.out.println("Bugs found: " + tokens.getBugzillaBugs());
+                            System.out.println("Reports found: " + tokens.getBugzillaReport());
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("*** FindBugs: Error processing projects.");
+                    e.printStackTrace();
+                }
             } else {
-                System.out.println("*** No projects were found in the inout file.");
+                System.out.println("*** No projects were found in the input file.");
             }
         } else {
             System.out.println("*** Input file was not found. Check the path.");
         }
     }
-
-    private String askInput() {    // asking for the path of input
+    // asking for the path of input
+    private String askInput() {
         Scanner scan = new Scanner(System.in);
         // detecting the operating system
         IdentifyOS identifyOS = new IdentifyOS();
         String inputPath = identifyOS.getGitPath();
         // getting the path to the text input file
         System.out.println("\nSpecify the path to the input file, which was the output of the previous operation named as" + TemporaryFiles.analysing.OUTPUT.getString() + ":");
-        System.out.printf(inputPath);
+        System.out.print(inputPath);
         inputPath += scan.nextLine(); // adding to the string produced by the identifyOS
         // returning to the main
         return inputPath;
     }
-    private void askWhichProjectToAnalyse(LinkedList<String> projects) {
+    // asks the user and returns the selected project(s)
+    private String askWhichProjectToAnalyse(LinkedList<String> projects) {
         Scanner scan = new Scanner(System.in);
         System.out.println("\nIn which project would you want to find bugs in?" +
-                "\nAlternatively, state \"all\" to find bugs in all the projects listed.");
+                "\nAlternatively, state \"all\" to find bugs in all the projects listed.\n");
         // printing available projects to the user
         for (String project:projects) {
-            if (project.equals(projects.getLast())) {
-                System.out.print("\"" + project + "\".\n");
-            } else {
-                System.out.print("\"" + project + "\"" + ", ");
-            }
+//            if (project.equals(projects.getLast())) {
+//                System.out.print("\"" + project + "\".\n");
+//            } else {
+//                System.out.print("\"" + project + "\"" + ", ");
+//            }
+            System.out.print(project + "\n");
         }
-        String answer = scan.nextLine();
+        String answer = scan.nextLine().trim();
         if (projects.contains(answer)){
             System.out.println("Proceeding to finding bugs in " + answer +"...");
+            // GetProjectInfo(String inputPath, String projectName)
+            return answer; // return the project
         } else if (answer.equals("all") || answer.equals("All") || answer.equals("ALL")) {
             System.out.println("Proceeding to finding bugs in all projects...");
+            // GetProjectInfo(String inputPath, LinkedList<String> projectNames)
+            return "A L L"; // return the projects
         } else {
             System.out.println("*** The entered project is not listed. Try again.");
-            askWhichProjectToAnalyse(projects);
+            return askWhichProjectToAnalyse(projects);
+        }
+    }
+    // for debugging
+    private void printProjects(LinkedList<ProjectsData> projectsData) {
+        for (ProjectsData oneProject:projectsData) {
+            System.out.println("Project: " + oneProject.getProject());
+            for (String comment:oneProject.getComments()) {
+                System.out.println("C: " + comment);
+            }
+            for (String checkout:oneProject.getCommitNumbers()) {
+                System.out.println("E: " + checkout);
+            }
         }
     }
 }

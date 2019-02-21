@@ -1,0 +1,29 @@
+package second.process;
+
+import second.process.data.Tokens;
+
+import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class BugzillaChecker {
+    public BugzillaChecker(LinkedList<Tokens> listTokens) {
+        for (Tokens tokens:listTokens) {
+            for (String token:tokens.getTokens()) {
+                // if the token matched the regex pattern, then add to potential Bugzilla bugs
+                if (checkAgainstRegex(token)) {
+                    tokens.addBugzillaBugs(token);
+                }
+            }
+        }
+    }
+
+    private boolean checkAgainstRegex(String token) {
+        String pattern = "\\b\\d\\d\\d\\d\\d\\b"; // 5 digit token required
+        Pattern r = Pattern.compile(pattern);
+        // matching against input
+        Matcher matcher = r.matcher(token);
+//        System.out.println("Yes or no: " + matcher.lookingAt());
+        return matcher.lookingAt();
+    }
+}

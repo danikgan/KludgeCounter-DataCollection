@@ -3,7 +3,7 @@ package first.analyse;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.LinkedList;
-//TODO Implement a line checker, so that the lines read == lines of the file
+
 public class ComparePMDandDIFF {
     // temporary, needed for calculations
 //    private LinkedList<Integer> lines_temp = new LinkedList<>();
@@ -212,7 +212,6 @@ public class ComparePMDandDIFF {
             e.printStackTrace();
         }
 
-        //TODO make lower && upper bound zero here
         lowerBound_temp = 0;
         upperBound_temp = 0;
     }
