@@ -1,6 +1,8 @@
 package second.process.data;
 
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class Tokens {
     private LinkedList<String> tokens = new LinkedList<>();
@@ -16,6 +18,9 @@ public class Tokens {
         return bugzillaBugs;
     }
     public LinkedList<String> getBugzillaReport() {
+        // remove duplicate data
+        Set<String> set = new HashSet<>(bugzillaReport);
+        bugzillaReport = new LinkedList<>(set);
         return bugzillaReport;
     }
     // adders

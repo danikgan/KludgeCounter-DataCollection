@@ -85,10 +85,14 @@ public class RetrieveBugzillaData {
     }
     // keeping track of changes ID
     private StringBuilder keepTrackOfChangesID(StringBuilder stringBuilder) {
-        changesID++; // next ID
-        stringBuilder = new StringBuilder(insideOfHistory(stringBuilder));
-        stringBuilder = new StringBuilder(insideOfHistory(stringBuilder));
-        stringBuilder = new StringBuilder(insideOfHistory(stringBuilder));
+        if (stringBuilder.indexOf("[")+1 == stringBuilder.indexOf("]")) {
+            // history is empty
+        } else {
+            changesID++; // next ID
+            stringBuilder = new StringBuilder(insideOfHistory(stringBuilder));
+            stringBuilder = new StringBuilder(insideOfHistory(stringBuilder));
+            stringBuilder = new StringBuilder(insideOfHistory(stringBuilder));
+        }
         return stringBuilder;
     }
     // checking with the "history" block
