@@ -2,6 +2,7 @@ import first.preprocessing.IdentifyOS;
 import first.utilities.TemporaryFiles;
 import second.preprocessing.CheckInputExists;
 import second.process.*;
+import second.process.data.BugzillaRestOutput;
 import second.process.data.ProjectsData;
 import second.process.data.Tokens;
 
@@ -22,10 +23,12 @@ class FindBugs {
      * save all info collected (record to separate XLSX or the same?)
      *
      * 1. FindProjects
-     * 2. GetProjectInfo
-     * 3. CommentTokenisation
-     * 4. BugzillaChecker
+     * 2. GetProjectInfo -> Tokens
+     * 3. CommentTokenisation -> Tokens
+     * 4. BugzillaChecker -> Tokens
      * 5. BugzillaLaunch
+     * 6. RetrieveBugzillaData -> RetrieveBugzillaData
+     * 7. SaveToXLSX
      */
     FindBugs() {
         String inputPath = askInput(); // getting the path to the input file
@@ -39,7 +42,9 @@ class FindBugs {
                 String projectSelected = askWhichProjectToAnalyse(projects); // returns projects' info collected
                 // saving returned data
                 LinkedList<ProjectsData> projectsData = new LinkedList<>();
+                // need to be initialised earlier
                 GetProjectInfo getProjectInfo;
+                LinkedList<Tokens> listTokens = new LinkedList<>();
                 try {
                     if (projectSelected.equals("A L L")) {
                         getProjectInfo = new GetProjectInfo(inputPath, projects); // all projects
@@ -48,20 +53,22 @@ class FindBugs {
                     }
                     // gets additional information from the records.xlsx file
                     projectsData = getProjectInfo.getProjectsData();
-//                    printProjects(projectsData);
+                    // saved data
+                    LinkedList<BugzillaRestOutput> bugzillaRestOutputs = new LinkedList<>();
                     for (ProjectsData projectData:projectsData) {
                         System.out.println("Project: " + projectData.getProject());
                         // tokenise
-                        LinkedList<Tokens> listTokens = new CommentTokenisation(projectData).getListTokens();
+                        listTokens = new CommentTokenisation(projectData).getListTokens();
                         // check if good for Bugzilla
                         new BugzillaChecker(listTokens);
                         // accessing REST and Bugzilla
                         new BugzillaLaunch(listTokens);
-                        for (Tokens tokens:listTokens) {
-                            System.out.println("Bugs found: " + tokens.getBugzillaBugs());
-                            System.out.println("Reports found: " + tokens.getBugzillaReport());
-                        }
+//                        printProjects(projectsData, listTokens);
+                        // retrieving valuable data from the reports
+                        bugzillaRestOutputs.addAll(new RetrieveBugzillaData(listTokens).getBugzillaRestOutputs());
                     }
+                    // save what was collected
+                    new SaveToXLSX(bugzillaRestOutputs, inputPath);
                 } catch (Exception e) {
                     System.out.println("*** FindBugs: Error processing projects.");
                     e.printStackTrace();
@@ -115,15 +122,20 @@ class FindBugs {
         }
     }
     // for debugging
-    private void printProjects(LinkedList<ProjectsData> projectsData) {
-        for (ProjectsData oneProject:projectsData) {
-            System.out.println("Project: " + oneProject.getProject());
-            for (String comment:oneProject.getComments()) {
-                System.out.println("C: " + comment);
-            }
-            for (String checkout:oneProject.getCommitNumbers()) {
-                System.out.println("E: " + checkout);
-            }
+    private void printProjects(LinkedList<ProjectsData> projectsData, LinkedList<Tokens> listTokens) {
+//        for (ProjectsData oneProject:projectsData) {
+//            System.out.println("Project: " + oneProject.getProject());
+//            for (String comment:oneProject.getComments()) {
+//                System.out.println("C: " + comment);
+//            }
+//            for (String checkout:oneProject.getCommitNumbers()) {
+//                System.out.println("E: " + checkout);
+//            }
+//        }
+        for (Tokens tokens:listTokens) {
+//            System.out.println("Tokens: " + tokens.getTokens());
+//            System.out.println("Bugs found: " + tokens.getBugzillaBugs());
+            System.out.println("Reports found: " + tokens.getBugzillaReport());
         }
     }
 }

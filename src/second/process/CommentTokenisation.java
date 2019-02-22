@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 public class CommentTokenisation {
     // to use
-    private String[] separators = {" ", "-", ":"};
+    private String[] separators = {" ", "-", ":", ".", ",", ";", ":", "\'", "\"", "\\", "/"};
     // to store
     private LinkedList<Tokens> listTokens = new LinkedList<>();
     // constructor: saves tokens of a comment to a list
@@ -25,24 +25,34 @@ public class CommentTokenisation {
     private Tokens getTokens(StringBuilder toTokenise, Tokens tokens) {
         if (Arrays.stream(separators).parallel().anyMatch(toTokenise.toString()::contains)){
             int index = 0;
+            boolean indexChanged = false; // to track that the value of 'index' is set to be or not to set to '0'
+//            System.out.println("CL: " + toTokenise.toString());
             for (String separator:separators) {
                 int tempIndex = toTokenise.indexOf(separator);
-                if (index > tempIndex && tempIndex > 0) { // for index > temp
+//                System.out.println("I: " + index + " S: " + separator + " TI: " + tempIndex);
+                if (index > tempIndex && tempIndex >= 0) { // for index > temp
                     // getting the lowest index to get token by token from left to right
                     index = tempIndex;
-                } else if (index == 0 && tempIndex > 0) { // for index < temp
-                    // for the first discovered index
+                    indexChanged = true;
+                } else if (!indexChanged && tempIndex >= 0) { // for the first discovered index
                     index = tempIndex;
+                    indexChanged = true;
                 }
             }
 //            System.out.println("FI: " + index);
-            tokens.addToken(toTokenise.toString().substring(0, index));
+            // if the substring is not empty
+            if (!toTokenise.toString().substring(0, index).equals("")) {
+                tokens.addToken(toTokenise.toString().substring(0, index));
+            }
             toTokenise.delete(0, index+1); /// +1 to delete the separator
 //            System.out.println("Token: " + tokens.getTokens().getLast());
             // repeat until all is tokenised
             return getTokens(toTokenise, tokens);
         } else {
-            tokens.addToken(toTokenise.toString());
+            // if the substring is not empty
+            if (!toTokenise.toString().equals("")) {
+                tokens.addToken(toTokenise.toString());
+            }
 //            System.out.println("Token: " + tokens.getTokens().getLast());
             return tokens;
         }

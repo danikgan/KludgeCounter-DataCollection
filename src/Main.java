@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Main {
     // Main method
     public static void main(String[] args) {
-        System.out.println("*** Script v2.3.4");
+        System.out.println("*** Script v3.beta");
         menu();
     }
     // asking user how to proceed
@@ -26,9 +26,9 @@ public class Main {
                     new GitPMDAnalyser();
                     break;
                 case 2:
-                    System.out.println("This option isn't ready yet.");
-//                    new FindBugs();
-                    menu();
+//                    System.out.println("This option isn't ready yet.");
+                    new FindBugs();
+//                    menu();
                     break;
                 case 3:
                     System.out.println("Deleting temporary files...");

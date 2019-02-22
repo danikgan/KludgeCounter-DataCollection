@@ -157,7 +157,7 @@ public class SaveRecordsXLSX {
             sheet.autoSizeColumn(i);
         }
         System.out.println("Closing...");
-        new DeleteFiles(new File(gitPath + "/" + outputFile));
+        new DeleteFiles(new File(gitPath + "/" + outputFile)); // required to update
         // Write the output to a file
         FileOutputStream fileOut = new FileOutputStream(gitPath + "/" +
                 outputFile);
