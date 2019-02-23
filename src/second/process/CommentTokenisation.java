@@ -8,7 +8,9 @@ import java.util.LinkedList;
 
 public class CommentTokenisation {
     // to use
-    private String[] separators = {" ", "-", ":", ".", ",", ";", ":", "\'", "\"", "\\", "/", "\n"};
+    private String[] separators = {" ", "-", ":", ".", ",", ";", ":", "*", "&", "#", "@",
+            "\'", "\"", "\\", "/", "]", "[", "}", "{",
+            "\n"};
     // to store
     private LinkedList<Tokens> listTokens = new LinkedList<>();
     // constructor: saves tokens of a comment to a list

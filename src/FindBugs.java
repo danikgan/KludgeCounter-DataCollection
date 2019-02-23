@@ -63,15 +63,20 @@ class FindBugs {
                         listTokens = new CommentTokenisation(projectData).getListTokens();
                         // check if good for Bugzilla
                         new BugzillaChecker(listTokens);
-                        // remove duplicated data
-                        removeDuplicateData(listTokens);
-                        // accessing REST and Bugzilla
-                        System.out.println("Getting URL reports...");
-                        new BugzillaLaunch(listTokens);
 //                        printProjects(projectsData, listTokens);
-                        // retrieving valuable data from the reports
-                        System.out.println("Retrieving valuable information...");
-                        bugzillaRestOutputs.addAll(new RetrieveBugzillaData(listTokens).getBugzillaRestOutputs());
+                        if (!listTokens.isEmpty()) {
+                            // remove duplicated data
+                            removeDuplicateData(listTokens);
+                            // accessing REST and Bugzilla
+                            System.out.println("Getting URL reports...");
+                            new BugzillaLaunch(listTokens);
+                            // retrieving valuable data from the reports + saving project name
+                            System.out.println("Retrieving valuable information...");
+                            bugzillaRestOutputs.addAll(
+                                    new RetrieveBugzillaData(listTokens, projectData.getProject())
+                                            .getBugzillaRestOutputs());
+                        }
+                        listTokens.clear();
                     }
                     // save what was collected
                     System.out.println("\nSaving...");
@@ -87,20 +92,28 @@ class FindBugs {
             System.out.println("*** Input file was not found. Check the path.");
         }
     }
+    // needed to remove duplicate bugzilla bugs
     private void removeDuplicateData(LinkedList<Tokens> listTokens) {
         LinkedList<String> bugzillaBugs = new LinkedList<>();
         // remove duplicate data
         for (Tokens tokens:listTokens) {
-            for (String bug:tokens.getBugzillaBugs()) {
+            int index_temp = tokens.getBugzillaBugs().size();
+            for (int i = 0; i < index_temp; i++) {
+                String bug = tokens.getBugzillaBugs().get(i);
                 if (bugzillaBugs.contains(bug)) {
                     // removes the duplicate
-                    tokens.getBugzillaBugs().removeFirstOccurrence(bug);
+                    tokens.getBugzillaBugs().remove(i);
+                    // when an item is removed, the list shrinks, thus there are less indices
+                    index_temp--;
+                    i--;
                 } else {
                     // saves unique
                     bugzillaBugs.add(bug);
                 }
             }
         }
+        // clearing for the sake of clearing
+        bugzillaBugs.clear();
     }
     // asking for the path of input
     private String askInput() {
@@ -145,7 +158,7 @@ class FindBugs {
     }
     // for debugging
     private void printProjects(LinkedList<ProjectsData> projectsData, LinkedList<Tokens> listTokens) {
-//        for (ProjectsData oneProject:projectsData) {
+        for (ProjectsData oneProject:projectsData) {
 //            System.out.println("Project: " + oneProject.getProject());
 //            for (String comment:oneProject.getComments()) {
 //                System.out.println("C: " + comment);
@@ -153,11 +166,11 @@ class FindBugs {
 //            for (String checkout:oneProject.getCommitNumbers()) {
 //                System.out.println("E: " + checkout);
 //            }
-//        }
+        }
         for (Tokens tokens:listTokens) {
 //            System.out.println("Tokens: " + tokens.getTokens());
-//            System.out.println("Bugs found: " + tokens.getBugzillaBugs());
-            System.out.println("Reports found: " + tokens.getBugzillaReport());
+            System.out.println("Bugs found: " + tokens.getBugzillaBugs());
+//            System.out.println("Reports found: " + tokens.getBugzillaReport());
         }
     }
 }

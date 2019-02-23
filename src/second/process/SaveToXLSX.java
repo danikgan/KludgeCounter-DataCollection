@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.Set;
 
 public class SaveToXLSX {
-    private String[] columns = { "Bugzilla ID", "Change ID",
+    private String[] columns = { "Project", "Bugzilla ID", "Change ID",
             "Changer", "Date",
             "Added", "Field Name", "Removed"};
     String outputFile = "bugzilla-report.xlsx";
@@ -47,13 +47,14 @@ public class SaveToXLSX {
             for (int i = 0; i < bugzillaRestOutput.getChanges().size(); i++) { // equals to the # of commits
                 Row row = sheet.createRow(rowNum++);
                 // writing
-                row.createCell(0).setCellValue(bugzillaRestOutput.getId());
-                row.createCell(1).setCellValue(bugzillaRestOutput.getChanges().get(i));
-                row.createCell(2).setCellValue(bugzillaRestOutput.getWho());
-                row.createCell(3).setCellValue(bugzillaRestOutput.getWhen());
-                row.createCell(4).setCellValue(bugzillaRestOutput.getAdded().get(i));
-                row.createCell(5).setCellValue(bugzillaRestOutput.getField_name().get(i));
-                row.createCell(6).setCellValue(bugzillaRestOutput.getRemoved().get(i));
+                row.createCell(0).setCellValue(bugzillaRestOutput.getProject());
+                row.createCell(1).setCellValue(bugzillaRestOutput.getId());
+                row.createCell(2).setCellValue(bugzillaRestOutput.getChanges().get(i));
+                row.createCell(3).setCellValue(bugzillaRestOutput.getWho());
+                row.createCell(4).setCellValue(bugzillaRestOutput.getWhen());
+                row.createCell(5).setCellValue(bugzillaRestOutput.getAdded().get(i));
+                row.createCell(6).setCellValue(bugzillaRestOutput.getField_name().get(i));
+                row.createCell(7).setCellValue(bugzillaRestOutput.getRemoved().get(i));
             }
         }
         // Resize all columns to fit the content size

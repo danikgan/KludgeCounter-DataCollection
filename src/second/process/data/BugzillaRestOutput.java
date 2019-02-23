@@ -6,6 +6,8 @@ import java.util.LinkedList;
 
 public class BugzillaRestOutput {
     // data to store
+    private String project;
+    // additional
     private LinkedList<String> added = new LinkedList<>();
     private LinkedList<String> field_name = new LinkedList<>();
     private LinkedList<String> removed = new LinkedList<>();
@@ -58,5 +60,11 @@ public class BugzillaRestOutput {
     }
     public void setId(String id) {
         this.id = id;
+    }
+    public String getProject() {
+        return project;
+    }
+    public void setProject(String project) {
+        this.project = project;
     }
 }

@@ -16,13 +16,15 @@ public class RetrieveBugzillaData {
     private BugzillaRestOutput bugzillaRestOutput;
     int changesID = 0;
     // constructor
-    public RetrieveBugzillaData(LinkedList<Tokens> listTokens) {
+    public RetrieveBugzillaData(LinkedList<Tokens> listTokens, String project) {
         // commence the parsing!
         for (Tokens tokens:listTokens) {
             for (String bugzillaReport:tokens.getBugzillaReport()) {
                 System.out.println("ID: " + tokens.getBugzillaBugs());
                 // initialise new for each report
                 bugzillaRestOutput = new BugzillaRestOutput();
+                // save project name
+                bugzillaRestOutput.setProject(project);
                 // retrieve data for this instance
                 StringBuilder stringBuilder = new StringBuilder(bugzillaReport);
                 changesID = 0;
@@ -46,7 +48,7 @@ public class RetrieveBugzillaData {
             // getting the history
             while (indexOfHistory < indexOfID) {
                 stringBuilder = new StringBuilder(
-                        keepTrackOfChangesID(stringBuilder));
+                        keepTrackOfChangesID(stringBuilder, false));
                 // update the values
                 indexOfHistory = stringBuilder.indexOf("changes"); // because history was removed from the StringBuilder
                 indexOfID = stringBuilder.indexOf("id");
@@ -57,13 +59,14 @@ public class RetrieveBugzillaData {
             stringBuilder = new StringBuilder(getID(stringBuilder)); // getting the id
             stringBuilder.delete(0, stringBuilder.indexOf("history"));
             // getting the history
-            while (temp_char != ']') {
+            while (temp_char != ']') { // || stringBuilder.toString().equals("\":[]}]}")
+//                System.out.println("L2 " + temp_char);
                 if (stringBuilder.toString().length() > temp_char_int+5) {
 //                    // checking for: value, ..."alias"=".."] - after id
-//                    if (stringBuilder.toString().substring(temp_char_int, temp_char_int+5).equals("alias")) {
+                    if (stringBuilder.toString().substring(temp_char_int+1, temp_char_int+6).equals("alias")) {
 //                        System.out.println("ALIAS1");
-//                        break; // against alias
-//                    }
+                        break; // against alias
+                    }
 //                    // checking for: value", ..."alias"=".."] - after history
                     if (stringBuilder.toString().length() > temp_char_int+10) {
                         if (stringBuilder.toString().substring(temp_char_int+5, temp_char_int+10).equals("alias")) {
@@ -72,7 +75,7 @@ public class RetrieveBugzillaData {
                         }
                     }
                     // if break did not happen, continue
-                    stringBuilder = new StringBuilder(keepTrackOfChangesID(stringBuilder));
+                    stringBuilder = new StringBuilder(keepTrackOfChangesID(stringBuilder, true));
                 }
                 // update the values
                 temp_char = stringBuilder.toString().charAt(stringBuilder.indexOf("\"")+4);
@@ -90,9 +93,20 @@ public class RetrieveBugzillaData {
         return stringBuilder;
     }
     // keeping track of changes ID
-    private StringBuilder keepTrackOfChangesID(StringBuilder stringBuilder) {
+    private StringBuilder keepTrackOfChangesID(StringBuilder stringBuilder, boolean loop) {
         if (stringBuilder.indexOf("[")+1 == stringBuilder.indexOf("]")) {
             // history is empty
+//            System.out.println("History is empty.");
+            if (loop) {
+                // without this, string builder is ":[]}]}
+                // thus, we remove till []}]}
+                // this give index of -1 for checking on "
+                // -1 +4 will equal to ]
+                stringBuilder.delete(0, stringBuilder.indexOf("\"")+2); // to exit the loop 2
+//                System.out.println("SB: " + stringBuilder);
+            } else {
+                stringBuilder.delete(0, stringBuilder.indexOf("\"")); // to exit the loop 1
+            }
         } else {
             changesID++; // next ID
             stringBuilder = new StringBuilder(insideOfHistory(stringBuilder));
