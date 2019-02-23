@@ -20,7 +20,7 @@ public class RetrieveBugzillaData {
         // commence the parsing!
         for (Tokens tokens:listTokens) {
             for (String bugzillaReport:tokens.getBugzillaReport()) {
-                System.out.println("\nID: " + tokens.getBugzillaBugs());
+                System.out.println("ID: " + tokens.getBugzillaBugs());
                 // initialise new for each report
                 bugzillaRestOutput = new BugzillaRestOutput();
                 // retrieve data for this instance
@@ -37,9 +37,12 @@ public class RetrieveBugzillaData {
         // used for while loops and if-else
         int indexOfHistory = stringBuilder.indexOf("history");
         int indexOfID = stringBuilder.indexOf("id");
+        // needed for termination of "]"
         char temp_char = stringBuilder.toString().charAt(stringBuilder.indexOf("\"")+4);
+        int temp_char_int = stringBuilder.toString().indexOf("\"");
         // starts the analysis
         if (indexOfHistory < indexOfID) { // history is closer
+            stringBuilder.delete(0, stringBuilder.indexOf("history"));
             // getting the history
             while (indexOfHistory < indexOfID) {
                 stringBuilder = new StringBuilder(
@@ -55,22 +58,25 @@ public class RetrieveBugzillaData {
             stringBuilder.delete(0, stringBuilder.indexOf("history"));
             // getting the history
             while (temp_char != ']') {
-                if (stringBuilder.toString().length() > temp_char+5) {
-                    if (stringBuilder.toString().substring(temp_char, temp_char+5).equals("alias")) {
-                        break; // against alias
-                    } else {
-                        stringBuilder = new StringBuilder(
-                                keepTrackOfChangesID(stringBuilder));
-                        // update the values
-                        temp_char = stringBuilder.toString().charAt(stringBuilder.indexOf("\"")+4);
+                if (stringBuilder.toString().length() > temp_char_int+5) {
+//                    // checking for: value, ..."alias"=".."] - after id
+//                    if (stringBuilder.toString().substring(temp_char_int, temp_char_int+5).equals("alias")) {
+//                        System.out.println("ALIAS1");
+//                        break; // against alias
+//                    }
+//                    // checking for: value", ..."alias"=".."] - after history
+                    if (stringBuilder.toString().length() > temp_char_int+10) {
+                        if (stringBuilder.toString().substring(temp_char_int+5, temp_char_int+10).equals("alias")) {
+//                            System.out.println("ALIAS2");
+                            break; // against alias
+                        }
                     }
+                    // if break did not happen, continue
+                    stringBuilder = new StringBuilder(keepTrackOfChangesID(stringBuilder));
                 }
-//                else {
-//                    stringBuilder = new StringBuilder(
-//                            keepTrackOfChangesID(stringBuilder));
-//                    // update the values
-//                    temp_char = stringBuilder.toString().charAt(stringBuilder.indexOf("\"")+4);
-//                }
+                // update the values
+                temp_char = stringBuilder.toString().charAt(stringBuilder.indexOf("\"")+4);
+                temp_char_int = stringBuilder.toString().indexOf("\"");
             }
         }
     }

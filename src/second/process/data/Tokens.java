@@ -17,12 +17,7 @@ public class Tokens {
     public LinkedList<String> getBugzillaBugs() {
         return bugzillaBugs;
     }
-    public LinkedList<String> getBugzillaReport() {
-        // remove duplicate data
-        Set<String> set = new HashSet<>(bugzillaReport);
-        bugzillaReport = new LinkedList<>(set);
-        return bugzillaReport;
-    }
+    public LinkedList<String> getBugzillaReport() { return bugzillaReport; }
     // adders
     public void addToken(String token) {
         this.tokens.add(token);

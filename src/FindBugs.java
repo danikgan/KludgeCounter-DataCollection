@@ -6,8 +6,10 @@ import second.process.data.BugzillaRestOutput;
 import second.process.data.ProjectsData;
 import second.process.data.Tokens;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Set;
 
 class FindBugs {
     /** This class is doing (pseudocode):
@@ -56,18 +58,23 @@ class FindBugs {
                     // saved data
                     LinkedList<BugzillaRestOutput> bugzillaRestOutputs = new LinkedList<>();
                     for (ProjectsData projectData:projectsData) {
-                        System.out.println("Project: " + projectData.getProject());
+                        System.out.println("\nProject: " + projectData.getProject());
                         // tokenise
                         listTokens = new CommentTokenisation(projectData).getListTokens();
                         // check if good for Bugzilla
                         new BugzillaChecker(listTokens);
+                        // remove duplicated data
+                        removeDuplicateData(listTokens);
                         // accessing REST and Bugzilla
+                        System.out.println("Getting URL reports...");
                         new BugzillaLaunch(listTokens);
 //                        printProjects(projectsData, listTokens);
                         // retrieving valuable data from the reports
+                        System.out.println("Retrieving valuable information...");
                         bugzillaRestOutputs.addAll(new RetrieveBugzillaData(listTokens).getBugzillaRestOutputs());
                     }
                     // save what was collected
+                    System.out.println("\nSaving...");
                     new SaveToXLSX(bugzillaRestOutputs, inputPath);
                 } catch (Exception e) {
                     System.out.println("*** FindBugs: Error processing projects.");
@@ -78,6 +85,21 @@ class FindBugs {
             }
         } else {
             System.out.println("*** Input file was not found. Check the path.");
+        }
+    }
+    private void removeDuplicateData(LinkedList<Tokens> listTokens) {
+        LinkedList<String> bugzillaBugs = new LinkedList<>();
+        // remove duplicate data
+        for (Tokens tokens:listTokens) {
+            for (String bug:tokens.getBugzillaBugs()) {
+                if (bugzillaBugs.contains(bug)) {
+                    // removes the duplicate
+                    tokens.getBugzillaBugs().removeFirstOccurrence(bug);
+                } else {
+                    // saves unique
+                    bugzillaBugs.add(bug);
+                }
+            }
         }
     }
     // asking for the path of input

@@ -22,7 +22,7 @@ public class BugzillaLaunch {
     private void useBugzilla(String bug, Tokens tokens) {
         try {
             // creating the url address
-            System.out.println("Bug: \"" + bug + "\"");
+//            System.out.println("Bug: \"" + bug + "\"");
             String url_string = "https://bz.apache.org/bugzilla/rest.cgi/bug/" + bug + "/history";
             System.out.println("URL: " + url_string);
             // setting the connection
