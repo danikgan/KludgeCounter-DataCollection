@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Main {
     // Main method
     public static void main(String[] args) {
-        System.out.println("*** Script v3.0.1");
+        System.out.println("*** Script v3.0.2");
         menu();
     }
     // asking user how to proceed

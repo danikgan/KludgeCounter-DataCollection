@@ -1,3 +1,4 @@
+import common.askInputPath;
 import first.AnalysedLink;
 import first.ReadTXTInput;
 import first.Records;
@@ -5,6 +6,7 @@ import first.SaveRecordsXLSX;
 import first.preprocessing.IdentifyOS;
 import first.preprocessing.IdentifyPMD;
 import first.preprocessing.PreviousStatus;
+import first.utilities.TemporaryFiles;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -43,20 +45,7 @@ public class GitPMDAnalyser {
     }
     // asking for the path of input
     private void askGitPath() {
-        Scanner scan = new Scanner(System.in);
-        // detecting the operating system
-        IdentifyOS identifyOS = new IdentifyOS();
-        gitPath = identifyOS.getGitPath();
-        // getting the path to the text input file
-        System.out.println("Specify the path for the text document, containing links and their corresponding number of commits to download. State the folders after: ");
-        System.out.printf(gitPath);
-        String temp_userInput = scan.nextLine();
-        // checking there is no extra "/" in the user answer
-        if (temp_userInput.charAt(temp_userInput.length()-1) == '/') {
-            gitPath += temp_userInput.substring(0, temp_userInput.length()-1);
-        } else {
-            gitPath += temp_userInput;
-        }
+        gitPath = new askInputPath("\nSpecify the path for the text document, containing links and their corresponding number of commits to download. State the folders after: ").getInputPath();
     }
     // reading the input file, doing auto-detections
     private void preProcessing() { // Pre-processing includes the reading of links and quantity of commits
@@ -121,6 +110,19 @@ public class GitPMDAnalyser {
             // saving to Excel
             if (records.size() > 0) {
                 savingData();
+                // final information printout
+                System.out.println("\n!!! Projects analysed [total number of commits]: ");
+                for (Records record:records) {
+                    System.out.println(" - " + record.getProjectName()
+                            + " [" + record.getCommitNumber().size() + "]");
+//                    if (record.getProjectName().equals(records.getLast().getProjectName())) {
+//                        System.out.println(". ");
+//                    } else {
+//                        System.out.println(", ");
+//                    }
+                }
+                System.out.println("Saved in Excel file \"" + TemporaryFiles.analysing.OUTPUT.getString() + "\""
+                + " in repository \"" + gitPath + "\".");
             }
             // print that the program is closing
             System.out.println("\nDone.");

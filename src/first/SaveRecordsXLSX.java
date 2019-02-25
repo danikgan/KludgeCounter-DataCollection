@@ -134,16 +134,19 @@ public class SaveRecordsXLSX {
                 row.createCell(3).setCellValue(record.getCommitDate().get(i));
 
                 // for comments
-                Cell cell = row.createCell(4);
-                stringBuilder = new StringBuilder(record.getCommitComment().get(i));
-                checkMaxChars(stringBuilder, cell, otherCellStyle);
+//                Cell cell = row.createCell(4);
+//                stringBuilder = new StringBuilder(record.getCommitComment().get(i));
+//                checkMaxChars(stringBuilder, cell, otherCellStyle);
+                row.createCell(4).setCellValue(record.getCommitComment().get(i)); // no limit
+
                 // checking for the last entry
                 if (i == record.getUniqueAlerts_count().size()) {
                     row.createCell(5).setCellValue("N/A");
                     row.createCell(6).setCellValue(-1);
                 } else {
                     // for PMD alerts
-                    cell = row.createCell(5);
+//                    cell = row.createCell(5);
+                    Cell cell = row.createCell(5);
                     stringBuilder = new StringBuilder(record.getUniqueAlerts().get(i));
                     checkMaxChars(stringBuilder, cell, otherCellStyle);
                     // alerts count

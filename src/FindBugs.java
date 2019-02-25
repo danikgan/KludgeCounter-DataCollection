@@ -1,3 +1,4 @@
+import common.askInputPath;
 import first.preprocessing.IdentifyOS;
 import first.utilities.TemporaryFiles;
 import second.preprocessing.CheckInputExists;
@@ -117,15 +118,9 @@ class FindBugs {
     }
     // asking for the path of input
     private String askInput() {
-        Scanner scan = new Scanner(System.in);
-        // detecting the operating system
-        IdentifyOS identifyOS = new IdentifyOS();
-        String inputPath = identifyOS.getGitPath();
-        // getting the path to the text input file
-        System.out.println("\nSpecify the path to the input file, which was the output of the previous operation named as" + TemporaryFiles.analysing.OUTPUT.getString() + ":");
-        System.out.print(inputPath);
-        inputPath += scan.nextLine(); // adding to the string produced by the identifyOS
-        // returning to the main
+        String asking = "\nSpecify the path to the input file, which was the output of the previous operation named as"
+                + TemporaryFiles.analysing.OUTPUT.getString() + ":";
+        String inputPath = new askInputPath(asking).getInputPath();
         return inputPath;
     }
     // asks the user and returns the selected project(s)
