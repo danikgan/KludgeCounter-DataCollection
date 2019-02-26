@@ -12,9 +12,9 @@ public class BugzillaRestOutput {
     private LinkedList<String> field_name = new LinkedList<>();
     private LinkedList<String> removed = new LinkedList<>();
     private LinkedList<Integer> changes = new LinkedList<>();
-    private String who;
-    private String when;
-    private String id;
+    private LinkedList<String> who = new LinkedList<>();
+    private LinkedList<String> when = new LinkedList<>();
+    private Integer id;
     public BugzillaRestOutput() { }
     // getters
     public LinkedList<String> getAdded() {
@@ -29,6 +29,13 @@ public class BugzillaRestOutput {
     public LinkedList<Integer> getChanges() {
         return changes;
     }
+    // higher level
+    public LinkedList<String> getWho() {
+        return who;
+    }
+    public LinkedList<String> getWhen() {
+        return when;
+    }
     // adders
     public void addAdded(String added) {
         this.added.add(added);
@@ -42,23 +49,18 @@ public class BugzillaRestOutput {
     public void addChanges(Integer changes) {
         this.changes.add(changes);
     }
+    // higher level
+    public void addWho(String who) {
+        this.who.add(who);
+    }
+    public void addWhen(String when) {
+        this.when.add(when);
+    }
     // single values
-    public String getWho() {
-        return who;
-    }
-    public void setWho(String who) {
-        this.who = who;
-    }
-    public String getWhen() {
-        return when;
-    }
-    public void setWhen(String when) {
-        this.when = when;
-    }
-    public String getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getProject() {

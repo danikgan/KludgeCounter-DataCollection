@@ -32,6 +32,7 @@ class FindBugs {
      * 5. BugzillaLaunch
      * 6. RetrieveBugzillaData -> RetrieveBugzillaData
      * 7. SaveToXLSX
+     * 8. SaveIdentifiedBugs
      */
     FindBugs() {
         String inputPath = askInput(); // getting the path to the input file
@@ -64,7 +65,9 @@ class FindBugs {
                         listTokens = new CommentTokenisation(projectData).getListTokens();
                         // check if good for Bugzilla
                         new BugzillaChecker(listTokens);
-//                        printProjects(projectsData, listTokens);
+//                        System.out.println("Adding identified bugs to "
+//                                + TemporaryFiles.analysing.OUTPUT.getString() + "...");
+//                        new SaveIdentifiedBugs(projectData.getProject(), listTokens, inputPath);
                         if (!listTokens.isEmpty()) {
                             // remove duplicated data
                             removeDuplicateData(listTokens);
@@ -76,6 +79,7 @@ class FindBugs {
                             bugzillaRestOutputs.addAll(
                                     new RetrieveBugzillaData(listTokens, projectData.getProject())
                                             .getBugzillaRestOutputs());
+                            new RetrieveBugzillaData(listTokens, projectData.getProject());
                         }
                         listTokens.clear();
                     }
@@ -120,8 +124,8 @@ class FindBugs {
     private String askInput() {
         String asking = "\nSpecify the path to the input file, which was the output of the previous operation named as"
                 + TemporaryFiles.analysing.OUTPUT.getString() + ":";
-        String inputPath = new askInputPath(asking).getInputPath();
-        return inputPath;
+        return new askInputPath(asking).getInputPath();
+//        return "/Users/danikgan/Desktop";
     }
     // asks the user and returns the selected project(s)
     private String askWhichProjectToAnalyse(LinkedList<String> projects) {
@@ -150,6 +154,9 @@ class FindBugs {
             System.out.println("*** The entered project is not listed. Try again.");
             return askWhichProjectToAnalyse(projects);
         }
+//        System.out.println("Proceeding to finding bugs in all projects...");
+//        // GetProjectInfo(String inputPath, LinkedList<String> projectNames)
+//        return "A L L"; // return the projects
     }
     // for debugging
     private void printProjects(LinkedList<ProjectsData> projectsData, LinkedList<Tokens> listTokens) {

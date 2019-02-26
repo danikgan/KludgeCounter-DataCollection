@@ -18,7 +18,7 @@ public class SaveToXLSX {
     private String[] columns = { "Project", "Bugzilla ID", "Change ID",
             "Changer", "Date",
             "Added", "Field Name", "Removed"};
-    String outputFile = "bugzilla-report.xlsx";
+    String outputFile = "bugzilla-history.xlsx";
     // constructor
     public SaveToXLSX(LinkedList<BugzillaRestOutput> bugzillaRestOutputs, String inputPath) {
         Workbook workbook = new XSSFWorkbook();
@@ -50,8 +50,8 @@ public class SaveToXLSX {
                 row.createCell(0).setCellValue(bugzillaRestOutput.getProject());
                 row.createCell(1).setCellValue(bugzillaRestOutput.getId());
                 row.createCell(2).setCellValue(bugzillaRestOutput.getChanges().get(i));
-                row.createCell(3).setCellValue(bugzillaRestOutput.getWho());
-                row.createCell(4).setCellValue(bugzillaRestOutput.getWhen());
+                row.createCell(3).setCellValue(bugzillaRestOutput.getWho().get(i));
+                row.createCell(4).setCellValue(bugzillaRestOutput.getWhen().get(i));
                 row.createCell(5).setCellValue(bugzillaRestOutput.getAdded().get(i));
                 row.createCell(6).setCellValue(bugzillaRestOutput.getField_name().get(i));
                 row.createCell(7).setCellValue(bugzillaRestOutput.getRemoved().get(i));

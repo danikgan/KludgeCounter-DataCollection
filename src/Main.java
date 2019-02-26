@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Main {
     // Main method
     public static void main(String[] args) {
-        System.out.println("*** Script v3.0.2");
+        System.out.println("*** Script v3.1.0");
         menu();
     }
     // asking user how to proceed
@@ -21,6 +21,7 @@ public class Main {
                 "\nPress \'0\' for exit.");
         try {
             int answer = scan.nextInt();
+//            int answer = 2;
             switch (answer) {
                 case 1:
                     new GitPMDAnalyser();
