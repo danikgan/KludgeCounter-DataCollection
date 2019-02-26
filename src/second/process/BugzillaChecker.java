@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 
 public class BugzillaChecker {
     public BugzillaChecker(LinkedList<Tokens> listTokens) {
+        // saving bug ids for records.xlsx
+        int bug_id = 0;
         for (Tokens tokens:listTokens) {
-            // saving bug ids for records.xlsx
-            int bug_id = 0;
             for (String token:tokens.getTokens()) {
                 // if the token matched the regex pattern, then add to potential Bugzilla bugs
                 if (checkAgainstRegex(token)) {

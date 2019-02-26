@@ -15,7 +15,7 @@ public class SaveRecordsXLSX {
     private final int MAX_CELL_CHAR = 1000;
     private String[] columns = { "Project", "Developer",
             "Commit", "Date", "Comment",
-            "Alerts", "Alert Count"};
+            "Alerts", "Alert Count", "Bug ID"};
     private String outputFile = TemporaryFiles.analysing.OUTPUT.getString();
 //    private String outputFile_compare = TemporaryFiles.analysing.OUTPUT.getString();
     // needed for all methods
@@ -137,7 +137,9 @@ public class SaveRecordsXLSX {
 //                Cell cell = row.createCell(4);
 //                stringBuilder = new StringBuilder(record.getCommitComment().get(i));
 //                checkMaxChars(stringBuilder, cell, otherCellStyle);
-                row.createCell(4).setCellValue(record.getCommitComment().get(i)); // no limit
+                Cell cell = row.createCell(4);
+                cell.setCellStyle(otherCellStyle); // auto-wrapping
+                cell.setCellValue(record.getCommitComment().get(i)); // no limit
 
                 // checking for the last entry
                 if (i == record.getUniqueAlerts_count().size()) {
@@ -146,9 +148,10 @@ public class SaveRecordsXLSX {
                 } else {
                     // for PMD alerts
 //                    cell = row.createCell(5);
-                    Cell cell = row.createCell(5);
+                    cell = row.createCell(5);
                     stringBuilder = new StringBuilder(record.getUniqueAlerts().get(i));
-                    checkMaxChars(stringBuilder, cell, otherCellStyle);
+                    checkMaxChars(stringBuilder, cell);
+                    cell.setCellStyle(otherCellStyle);
                     // alerts count
                     row.createCell(6).setCellValue(record.getUniqueAlerts_count().get(i));
                 }
@@ -169,12 +172,12 @@ public class SaveRecordsXLSX {
         workbook.close();
     }
     // needed for cells with excessive information writing
-    private void checkMaxChars(StringBuilder stringBuilder, Cell cell, CellStyle otherCellStyle) {
+    private void checkMaxChars(StringBuilder stringBuilder, Cell cell) {
         if (stringBuilder.toString().length() > MAX_CELL_CHAR) {
             stringBuilder.delete(MAX_CELL_CHAR, stringBuilder.toString().length());
             stringBuilder.append("\n...{continued}...");
         }
         cell.setCellValue(stringBuilder.toString());
-        cell.setCellStyle(otherCellStyle);
+//        cell.setCellStyle(otherCellStyle);
     }
 }

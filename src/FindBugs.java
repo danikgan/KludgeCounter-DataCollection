@@ -65,9 +65,9 @@ class FindBugs {
                         listTokens = new CommentTokenisation(projectData).getListTokens();
                         // check if good for Bugzilla
                         new BugzillaChecker(listTokens);
-//                        System.out.println("Adding identified bugs to "
-//                                + TemporaryFiles.analysing.OUTPUT.getString() + "...");
-//                        new SaveIdentifiedBugs(projectData.getProject(), listTokens, inputPath);
+                        System.out.println("Adding identified bugs to "
+                                + TemporaryFiles.analysing.OUTPUT.getString() + "...");
+                        new SaveIdentifiedBugs(projectData.getProject(), listTokens, inputPath);
                         if (!listTokens.isEmpty()) {
                             // remove duplicated data
                             removeDuplicateData(listTokens);
@@ -79,7 +79,6 @@ class FindBugs {
                             bugzillaRestOutputs.addAll(
                                     new RetrieveBugzillaData(listTokens, projectData.getProject())
                                             .getBugzillaRestOutputs());
-                            new RetrieveBugzillaData(listTokens, projectData.getProject());
                         }
                         listTokens.clear();
                     }
