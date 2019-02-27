@@ -1,5 +1,6 @@
 package first;
 
+import common.CloseWorkbook;
 import first.utilities.DeleteFiles;
 import first.utilities.TemporaryFiles;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -163,13 +164,9 @@ public class SaveRecordsXLSX {
             sheet.autoSizeColumn(i);
         }
         System.out.println("Closing...");
-        new DeleteFiles(new File(gitPath + "/" + outputFile)); // required to update
-        // Write the output to a file
-        FileOutputStream fileOut = new FileOutputStream(gitPath + "/" +
-                outputFile);
-        workbook.write(fileOut);
-        fileOut.close();
-        workbook.close();
+        // closing and saving the workbook
+        String path = gitPath + "/" + outputFile;
+        new CloseWorkbook(path, workbook);
     }
     // needed for cells with excessive information writing
     private void checkMaxChars(StringBuilder stringBuilder, Cell cell) {

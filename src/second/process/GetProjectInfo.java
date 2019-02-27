@@ -1,5 +1,6 @@
 package second.process;
 
+import common.CloseWorkbook;
 import first.utilities.TemporaryFiles;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -50,10 +51,13 @@ public class GetProjectInfo {
             if (projectName.equals(String.valueOf(row.getCell(0)))) {
                 projectsData.addCommitNumber(String.valueOf(row.getCell(2)));
                 projectsData.addComment(String.valueOf(row.getCell(4)));
+                // make the 7th cell, which is about Bug ID, equal to null to avoid data duplication
+                row.createCell(7).setCellValue(""); // deleting any previous data to avoid duplication
             }
         }
         // Close the workbook
-        workbook.close();
+        String path = inputPath + "/" + TemporaryFiles.analysing.OUTPUT.getString();
+        new CloseWorkbook(path, workbook);
         // return the project discovered
         return projectsData;
     }
