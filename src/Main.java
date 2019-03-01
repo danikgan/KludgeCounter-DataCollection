@@ -1,5 +1,5 @@
-import first.utilities.DeleteFiles;
-import first.utilities.TemporaryFiles;
+import common.DeleteFiles;
+import common.TemporaryFiles;
 
 import java.io.File;
 import java.util.InputMismatchException;
@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Main {
     // Main method
     public static void main(String[] args) {
-        System.out.println("*** Script v3.2.1");
+        System.out.println("*** Script v3.3");
         menu();
     }
     // asking user how to proceed
@@ -16,7 +16,9 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         System.out.println("\nSelect one of the operations:" +
                 "\n1. Use \"links.txt\" to analyse Git using PMD." +
-                "\n2. Use \"records.xlsx\" for Bugzilla." +
+                "\n2. Use \"" +
+                TemporaryFiles.analysing.OUTPUT_ONE.getString() +
+                "\" for Bugzilla." +
                 "\n3. Delete all temporary files. (USED FOR TESTING)" +
                 "\nPress \'0\' for exit.");
         try {
@@ -51,18 +53,18 @@ public class Main {
     // delete temporary files within the script repository, used mostly for testing
     private static void deleteTemporaryFiles() {
         // part of first operation
-        String file = TemporaryFiles.analysing.GITDIFF.getString();
+        String file = TemporaryFiles.analysing.GIT_DIFF.getString();
         new DeleteFiles(new File(file));
-        file = TemporaryFiles.analysing.PMDALERTS.getString();
+        file = TemporaryFiles.analysing.PMD_ALERTS.getString();
         new DeleteFiles(new File(file));
-        file = TemporaryFiles.analysing.COMMITSLIST.getString();
+        file = TemporaryFiles.analysing.COMMITS_LIST.getString();
         new DeleteFiles(new File(file));
-        file = TemporaryFiles.analysing.IDENTIFYPMD.getString();
+        file = TemporaryFiles.analysing.IDENTIFY_PMD.getString();
         new DeleteFiles(new File(file));
-        file = TemporaryFiles.analysing.EXECUTIONSTATUS.getString();
+        file = TemporaryFiles.analysing.EXECUTION_STATUS.getString();
         new DeleteFiles(new File(file));
         // part of the second operation
-        file = TemporaryFiles.analysing.CHECKINPUT.getString();
+        file = TemporaryFiles.analysing.CHECK_INPUT.getString();
         new DeleteFiles(new File(file));
         System.out.println("Deleted.");
     }

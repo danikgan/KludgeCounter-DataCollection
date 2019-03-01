@@ -1,7 +1,7 @@
 package second.process;
 
 import common.CloseWorkbook;
-import first.utilities.TemporaryFiles;
+import common.TemporaryFiles;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import second.process.data.ProjectsData;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -36,7 +35,7 @@ public class GetProjectInfo {
      */
     private ProjectsData extractFromXLSX(String inputPath, String projectName) throws IOException {
         // file to open
-        String fileName = TemporaryFiles.analysing.OUTPUT.getString();
+        String fileName = TemporaryFiles.analysing.OUTPUT_ONE.getString();
         // Obtain a workbook from the excel file
         Workbook workbook = WorkbookFactory.create(new File(inputPath + "/" + fileName));
         Sheet sheet = workbook.getSheetAt(0); // Get Sheet at index 0
@@ -56,7 +55,7 @@ public class GetProjectInfo {
             }
         }
         // Close the workbook
-        String path = inputPath + "/" + TemporaryFiles.analysing.OUTPUT.getString();
+        String path = inputPath + "/" + TemporaryFiles.analysing.OUTPUT_ONE.getString();
         new CloseWorkbook(path, workbook);
         // return the project discovered
         return projectsData;

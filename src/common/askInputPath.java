@@ -1,13 +1,12 @@
 package common;
 
 import first.preprocessing.IdentifyOS;
-import first.utilities.TemporaryFiles;
 
 import java.util.Scanner;
 
-public class askInputPath {
+public class AskInputPath {
     String inputPath;
-    public askInputPath(String asking) {
+    public AskInputPath(String asking) {
         Scanner scan = new Scanner(System.in);
         // detecting the operating system
         IdentifyOS identifyOS = new IdentifyOS();

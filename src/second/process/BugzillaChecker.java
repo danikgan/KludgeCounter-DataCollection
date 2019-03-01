@@ -12,7 +12,7 @@ public class BugzillaChecker {
         int bug_id = 0;
         for (Tokens tokens:listTokens) {
             for (String token:tokens.getTokens()) {
-                // if the token matched the regex pattern, then add to potential Bugzilla bugs
+                // if the token matched the regex pattern, then add to potential Bugzilla BugsHistory
                 if (checkAgainstRegex(token)) {
                     tokens.addBugzillaBugs(token);
                     tokens.addBugzillaBugs_id(bug_id);

@@ -1,16 +1,13 @@
 package second.preprocessing;
 
-import first.analyse.ApplyPMD;
 import first.analyse.UseTerminal;
-import first.utilities.DeleteFiles;
-import first.utilities.TemporaryFiles;
+import common.DeleteFiles;
+import common.TemporaryFiles;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
-import static first.analyse.ApplyPMD.setVersionPMD;
 
 public class CheckInputExists {
     // result of the search
@@ -18,11 +15,11 @@ public class CheckInputExists {
     // checking input file exists at the specified path
     public CheckInputExists(String inputPath) {
         String[] command = {"ls"};
-        String fileReader = TemporaryFiles.analysing.CHECKINPUT.getString();
+        String fileReader = TemporaryFiles.analysing.CHECK_INPUT.getString();
         new UseTerminal(command, inputPath, fileReader); // output file will be produced of name fileReader
         try {
             // using this file for comparison
-            String identifier = TemporaryFiles.analysing.OUTPUT.getString();
+            String identifier = TemporaryFiles.analysing.OUTPUT_ONE.getString();
             // find it in the txt document created by terminal output
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fileReader));
             String line = bufferedReader.readLine();

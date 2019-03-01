@@ -19,8 +19,8 @@ public class RetrieveBugzillaData {
 	// constructor
 	public RetrieveBugzillaData(LinkedList<Tokens> listTokens, String project) { // commence the parsing!
 		for (Tokens tokens:listTokens) {
-			for (String bugzillaReport : tokens.getBugzillaReport()) {
-				System.out.println("ID: " + tokens.getBugzillaBugs());
+			for (String bugzillaReport : tokens.getBugzillaReport_history()) {
+//				System.out.println("ID: " + tokens.getBugzillaBugs());
 				// initialise new for each report
                 bugzillaRestOutput = new BugzillaRestOutput();
                 // save project name
@@ -39,7 +39,7 @@ public class RetrieveBugzillaData {
 		builder.setPrettyPrinting();
 		Gson gson = builder.create();
 		// allocation of information
-		Bugs bugs = gson.fromJson(bugzillaReport, Bugs.class);
+		BugsHistory bugs = gson.fromJson(bugzillaReport, BugsHistory.class);
 		// saving the collected data
 		int changes = 0;
 		for (insideHistory instanceHistory:bugs.getBugs().get(0).getHistory()) {
@@ -62,7 +62,7 @@ public class RetrieveBugzillaData {
 	}
 }
 // the root
-class Bugs {
+class BugsHistory {
 	private List<insideBugs> bugs;
 	// getters
 	List<insideBugs> getBugs() {
@@ -70,12 +70,12 @@ class Bugs {
 	}
 	@Override
 	public String toString() {
-		return "Bugs{" +
-				"bugs=" + bugs +
+		return "BugsHistory{" +
+				"BugsHistory=" + bugs +
 				'}';
 	}
 }
-// inside of bugs
+// inside of BugsHistory
 class insideBugs {
 	private Integer id;
 	private List<insideHistory> history;

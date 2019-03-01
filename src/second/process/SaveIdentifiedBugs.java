@@ -1,15 +1,11 @@
 package second.process;
 
 import common.CloseWorkbook;
-import first.Records;
-import first.utilities.DeleteFiles;
-import first.utilities.TemporaryFiles;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import common.TemporaryFiles;
 import org.apache.poi.ss.usermodel.*;
 import second.process.data.Tokens;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -22,7 +18,7 @@ public class SaveIdentifiedBugs {
 	public SaveIdentifiedBugs(String project, LinkedList<Tokens> listTokens, String inputPath) throws IOException {
 		// Obtain a workbook from the excel file
 		Workbook workbook = WorkbookFactory.create(new File(inputPath + "/"
-				+ TemporaryFiles.analysing.OUTPUT.getString()));
+				+ TemporaryFiles.analysing.OUTPUT_ONE.getString()));
 		Sheet sheet = workbook.getSheetAt(0); // Get Sheet at index 0
 		rowNum = sheet.getPhysicalNumberOfRows(); // getting the max number of rows
 		// proceed
@@ -36,7 +32,7 @@ public class SaveIdentifiedBugs {
 							sheet, otherCellStyle);
 				} catch (IOException e) {
 					System.out.println("*** SaveIdentifiedBugs: Error in recording to "
-							+ TemporaryFiles.analysing.OUTPUT.getString() + ".");
+							+ TemporaryFiles.analysing.OUTPUT_ONE.getString() + ".");
 					e.printStackTrace();
 				}
 			}
@@ -44,10 +40,10 @@ public class SaveIdentifiedBugs {
 		// Resize 7th column to fit the content size
 		sheet.autoSizeColumn(7);
 		// closing the workbook
-		String path = inputPath + "/" + TemporaryFiles.analysing.OUTPUT.getString();
+		String path = inputPath + "/" + TemporaryFiles.analysing.OUTPUT_ONE.getString();
 		new CloseWorkbook(path, workbook);
 	}
-	// writing bugs to records.xlsx
+	// writing BugsHistory to records.xlsx
 	private void writeToXLSX(String project,
 							 String bug, Integer bugId,
 							 Sheet sheet, CellStyle otherCellStyle) throws IOException {
@@ -56,7 +52,7 @@ public class SaveIdentifiedBugs {
 //			System.out.println("Line: " + initialRow);
 			if (String.valueOf(row.getCell(0)).equals(project)) {
 				if (commentNumber == bugId) {
-					// save the bugs
+					// save the BugsHistory
 					if (!String.valueOf(row.getCell(7)).equals("")) {
 						bug = row.getCell(7) + "\n" + bug;
 					}

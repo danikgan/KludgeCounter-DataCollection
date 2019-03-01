@@ -1,6 +1,6 @@
 package first.analyse;
 
-import first.utilities.TemporaryFiles;
+import common.TemporaryFiles;
 
 import java.io.*;
 
@@ -32,7 +32,7 @@ public class ApplyPMD {
             BufferedReader bufferedReader = new BufferedReader(reader);
             String line;
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(TemporaryFiles.analysing.PMDALERTS.getString()));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(TemporaryFiles.analysing.PMD_ALERTS.getString()));
             while ((line = bufferedReader.readLine()) != null) {
 //                System.out.println(line); // the output is here
                 writer.write(line);

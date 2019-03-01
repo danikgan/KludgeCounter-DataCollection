@@ -2,8 +2,8 @@ package first.preprocessing;
 
 import first.analyse.ApplyPMD;
 import first.analyse.UseTerminal;
-import first.utilities.DeleteFiles;
-import first.utilities.TemporaryFiles;
+import common.DeleteFiles;
+import common.TemporaryFiles;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +16,7 @@ public class IdentifyPMD {
     // auto-detecting PMD version within the repository
     public IdentifyPMD() {
         String[] command = {"ls"};
-        String fileReader = TemporaryFiles.analysing.IDENTIFYPMD.getString();
+        String fileReader = TemporaryFiles.analysing.IDENTIFY_PMD.getString();
         new UseTerminal(command, "", fileReader);
 
         try {

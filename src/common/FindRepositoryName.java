@@ -1,4 +1,4 @@
-package first.utilities;
+package common;
 
 public class FindRepositoryName {
     String folderName;

@@ -1,6 +1,6 @@
 package first.analyse;
 
-import first.utilities.FindRepositoryName;
+import common.FindRepositoryName;
 
 import java.io.File;
 import java.io.*;

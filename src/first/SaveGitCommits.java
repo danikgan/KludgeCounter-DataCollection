@@ -1,8 +1,7 @@
 package first;
 
 import common.CloseWorkbook;
-import first.utilities.DeleteFiles;
-import first.utilities.TemporaryFiles;
+import common.TemporaryFiles;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -12,18 +11,18 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-public class SaveRecordsXLSX {
+public class SaveGitCommits {
     private final int MAX_CELL_CHAR = 1000;
     private String[] columns = { "Project", "Developer",
             "Commit", "Date", "Comment",
             "Alerts", "Alert Count", "Bug ID"};
-    private String outputFile = TemporaryFiles.analysing.OUTPUT.getString();
-//    private String outputFile_compare = TemporaryFiles.analysing.OUTPUT.getString();
+    private String outputFile = TemporaryFiles.analysing.OUTPUT_ONE.getString();
+//    private String outputFile_compare = TemporaryFiles.analysing.OUTPUT_ONE.getString();
     // needed for all methods
     private LinkedList<Records> records;
     private String gitPath;
     // constructor
-    public SaveRecordsXLSX(LinkedList<Records> records, String gitPath){
+    public SaveGitCommits(LinkedList<Records> records, String gitPath){
         this.records = records;
         this.gitPath = gitPath;
     }
@@ -84,7 +83,7 @@ public class SaveRecordsXLSX {
             process.getInputStream().close();
             process.waitFor();
         } catch (InterruptedException | IOException e) {
-            System.out.println("*** SaveRecordsXLSX: Error checking for existing repositories.");
+            System.out.println("*** SaveGitCommits: Error checking for existing repositories.");
             e.printStackTrace();
 
         } finally { if (process != null) { process.destroy(); } }
@@ -99,7 +98,7 @@ public class SaveRecordsXLSX {
                 createNewRecords();
             }
         } catch (InvalidFormatException | IOException e) {
-            System.out.println("*** SaveRecordsXLSX: Error creating new records.");
+            System.out.println("*** SaveGitCommits: Error creating new records.");
             e.printStackTrace();
         }
 

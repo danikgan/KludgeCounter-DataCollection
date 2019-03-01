@@ -1,8 +1,8 @@
 package first;
 
 import first.analyse.*; // additional classes for AnalysedLink
-import first.utilities.DeleteFiles;
-import first.utilities.TemporaryFiles;
+import common.DeleteFiles;
+import common.TemporaryFiles;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -22,9 +22,9 @@ public class AnalysedLink {
     private boolean projectExists = true;
 //    private boolean projectFinished = false;
     // various file created for the execution
-    private String gitDiffTXT_string = TemporaryFiles.analysing.GITDIFF.getString();
-    private String commitsListTXT_string = TemporaryFiles.analysing.COMMITSLIST.getString();
-    private String pmdAlertsTXT_string = TemporaryFiles.analysing.PMDALERTS.getString();
+    private String gitDiffTXT_string = TemporaryFiles.analysing.GIT_DIFF.getString();
+    private String commitsListTXT_string = TemporaryFiles.analysing.COMMITS_LIST.getString();
+    private String pmdAlertsTXT_string = TemporaryFiles.analysing.PMD_ALERTS.getString();
     // attributes needed
     private String projectName;
     private String gitPath;

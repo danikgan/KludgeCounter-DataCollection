@@ -1,26 +1,20 @@
 package second.process;
 
-import first.Records;
-import first.utilities.DeleteFiles;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import common.CloseWorkbook;
+import common.TemporaryFiles;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import second.process.data.BugzillaRestOutput;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
 
-public class SaveToXLSX {
+public class SaveBugzillaHistory {
     private String[] columns = { "Project", "Bugzilla ID", "Change ID",
             "Changer", "Date",
             "Added", "Field Name", "Removed"};
-    String outputFile = "bugzilla-history.xlsx";
     // constructor
-    public SaveToXLSX(LinkedList<BugzillaRestOutput> bugzillaRestOutputs, String inputPath) {
+    public SaveBugzillaHistory(LinkedList<BugzillaRestOutput> bugzillaRestOutputs, String inputPath) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet( "Bugs History");
         // header font
@@ -63,12 +57,8 @@ public class SaveToXLSX {
         }
         System.out.println("Closing...");
         try {
-            // Write the output to a file
-            FileOutputStream fileOut = new FileOutputStream(inputPath + "/" +
-                    outputFile);
-            workbook.write(fileOut);
-            fileOut.close();
-            workbook.close();
+            new CloseWorkbook(inputPath + "/" +
+                    TemporaryFiles.analysing.OUTPUT_TWO.getString(), workbook);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,6 @@
 package second.process;
 
-import first.utilities.TemporaryFiles;
+import common.TemporaryFiles;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -22,14 +22,14 @@ public class FindProjects {
         try {
             readXLSX(inputPath);
         } catch (Exception e) {
-            System.out.println("*** FindProjects: Error reading " + TemporaryFiles.analysing.OUTPUT.getString() +
+            System.out.println("*** FindProjects: Error reading " + TemporaryFiles.analysing.OUTPUT_ONE.getString() +
                     " file's entries.");
             e.printStackTrace();
         }
     }
     private void readXLSX(String inputPath) throws IOException {
         // file to open
-        String fileName = TemporaryFiles.analysing.OUTPUT.getString();
+        String fileName = TemporaryFiles.analysing.OUTPUT_ONE.getString();
         // Obtain a workbook from the excel file
         Workbook workbook = WorkbookFactory.create(new File(inputPath + "/" + fileName));
         Sheet sheet = workbook.getSheetAt(0); // Get Sheet at index 0

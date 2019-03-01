@@ -1,9 +1,9 @@
 package first.preprocessing;
 
 import first.analyse.UseTerminal;
-import first.utilities.DeleteFiles;
-import first.utilities.TemporaryFiles;
-import first.utilities.FindRepositoryName;
+import common.DeleteFiles;
+import common.TemporaryFiles;
+import common.FindRepositoryName;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,16 +20,16 @@ public class PreviousStatus {
     public PreviousStatus(LinkedList<String> links, String gitPath) {
         // check user on how to proceed
         String[] command = {"ls"};
-        String fileReader = TemporaryFiles.analysing.EXECUTIONSTATUS.getString(); // saves output in this file
+        String fileReader = TemporaryFiles.analysing.EXECUTION_STATUS.getString(); // saves output in this file
         new UseTerminal(command, "", fileReader);
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fileReader));
             String line = bufferedReader.readLine();
             // initialise the same identifiers as in AnalysedLink
             String[] identifiers = new String[3];
-            identifiers[0] = TemporaryFiles.analysing.GITDIFF.getString();
-            identifiers[1] = TemporaryFiles.analysing.COMMITSLIST.getString();
-            identifiers[2] = TemporaryFiles.analysing.PMDALERTS.getString();
+            identifiers[0] = TemporaryFiles.analysing.GIT_DIFF.getString();
+            identifiers[1] = TemporaryFiles.analysing.COMMITS_LIST.getString();
+            identifiers[2] = TemporaryFiles.analysing.PMD_ALERTS.getString();
             // compare what was found
             while (line != null) {
                 for (String identifier:identifiers) {

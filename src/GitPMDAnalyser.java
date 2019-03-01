@@ -1,15 +1,13 @@
-import common.askInputPath;
+import common.AskInputPath;
 import first.AnalysedLink;
 import first.ReadTXTInput;
 import first.Records;
-import first.SaveRecordsXLSX;
-import first.preprocessing.IdentifyOS;
+import first.SaveGitCommits;
 import first.preprocessing.IdentifyPMD;
 import first.preprocessing.PreviousStatus;
-import first.utilities.TemporaryFiles;
+import common.TemporaryFiles;
 
 import java.util.LinkedList;
-import java.util.Scanner;
 
 public class GitPMDAnalyser {
     // in case of errors
@@ -45,7 +43,7 @@ public class GitPMDAnalyser {
     }
     // asking for the path of input
     private void askGitPath() {
-        gitPath = new askInputPath("\nSpecify the path for the text document, containing links and their corresponding number of commits to download. State the folders after: ").getInputPath();
+        gitPath = new AskInputPath("\nSpecify the path for the text document, containing links and their corresponding number of commits to download. State the folders after: ").getInputPath();
     }
     // reading the input file, doing auto-detections
     private void preProcessing() { // Pre-processing includes the reading of links and quantity of commits
@@ -81,12 +79,12 @@ public class GitPMDAnalyser {
     // saving the analysed data
     private void savingData() {
         System.out.println("\nSaving...");
-        SaveRecordsXLSX saveRecordsXLSX = new SaveRecordsXLSX(records, gitPath);
-//        saveRecordsXLSX.createNewRecords();
+        SaveGitCommits saveGitCommits = new SaveGitCommits(records, gitPath);
+//        saveGitCommits.createNewRecords();
         if (previousStatus.isAnswered() && !previousStatus.isRestart()) {
-            saveRecordsXLSX.checkRecordsExist();
+            saveGitCommits.checkRecordsExist();
         } else {
-            saveRecordsXLSX.createNewRecords();
+            saveGitCommits.createNewRecords();
         }
     }
     // a class that extends thread that is to be called when program is exiting
@@ -114,14 +112,14 @@ public class GitPMDAnalyser {
                 System.out.println("\n!!! Projects analysed [total number of commits]: ");
                 for (Records record:records) {
                     System.out.println(" - " + record.getProjectName()
-                            + " [" + record.getCommitNumber().size() + "]");
+                            + " [" + record.getUniqueAlerts_count().size() + "]");
 //                    if (record.getProjectName().equals(records.getLast().getProjectName())) {
 //                        System.out.println(". ");
 //                    } else {
 //                        System.out.println(", ");
 //                    }
                 }
-                System.out.println("Saved in Excel file \"" + TemporaryFiles.analysing.OUTPUT.getString() + "\""
+                System.out.println("Saved in Excel file \"" + TemporaryFiles.analysing.OUTPUT_ONE.getString() + "\""
                 + " in repository \"" + gitPath + "\".");
             }
             // print that the program is closing
