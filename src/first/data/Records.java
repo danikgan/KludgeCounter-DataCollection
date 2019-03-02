@@ -1,4 +1,4 @@
-package first;
+package first.data;
 
 import java.util.LinkedList;
 
@@ -10,6 +10,8 @@ public class Records {
     private LinkedList<String> commitComment = new LinkedList<>();
     private LinkedList<String> uniqueAlerts = new LinkedList<>();
     private LinkedList<Integer> uniqueAlerts_count = new LinkedList<>();
+    private LinkedList<Integer> numberOfFilesModified = new LinkedList<>();
+    private LinkedList<Integer> numberOfLinesModified = new LinkedList<>();
 
     public String getProjectName() {
         return projectName;
@@ -65,6 +67,22 @@ public class Records {
 
     public void setUniqueAlerts_count(LinkedList<Integer> uniqueAlerts_count) {
         this.uniqueAlerts_count = uniqueAlerts_count;
+    }
+
+    public LinkedList<Integer> getNumberOfLinesModified() {
+        return numberOfLinesModified;
+    }
+
+    public void setNumberOfLinesModified(LinkedList<Integer> numberOfLinesModified) {
+        this.numberOfLinesModified = numberOfLinesModified;
+    }
+
+    public LinkedList<Integer> getNumberOfFilesModified() {
+        return numberOfFilesModified;
+    }
+
+    public void setNumberOfFilesModified(LinkedList<Integer> numberOfFilesModified) {
+        this.numberOfFilesModified = numberOfFilesModified;
     }
 
     @Override

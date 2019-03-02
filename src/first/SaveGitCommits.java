@@ -2,6 +2,7 @@ package first;
 
 import common.CloseWorkbook;
 import common.TemporaryFiles;
+import first.data.Records;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -15,7 +16,8 @@ public class SaveGitCommits {
     private final int MAX_CELL_CHAR = 1000;
     private String[] columns = { "Project", "Developer",
             "Commit", "Date", "Comment",
-            "Alerts", "Alert Count", "Bug ID"};
+            "Alerts", "Alert Count", "Bug ID",
+            "Lines Added", "Files Modified"};
     private String outputFile = TemporaryFiles.analysing.OUTPUT_ONE.getString();
 //    private String outputFile_compare = TemporaryFiles.analysing.OUTPUT_ONE.getString();
     // needed for all methods
@@ -145,15 +147,18 @@ public class SaveGitCommits {
                 if (i == record.getUniqueAlerts_count().size()) {
                     row.createCell(5).setCellValue("N/A");
                     row.createCell(6).setCellValue(-1);
+                    row.createCell(8).setCellValue(-1);
+                    row.createCell(9).setCellValue(-1);
                 } else {
                     // for PMD alerts
-//                    cell = row.createCell(5);
                     cell = row.createCell(5);
                     stringBuilder = new StringBuilder(record.getUniqueAlerts().get(i));
                     checkMaxChars(stringBuilder, cell);
                     cell.setCellStyle(otherCellStyle);
-                    // alerts count
+                    // other
                     row.createCell(6).setCellValue(record.getUniqueAlerts_count().get(i));
+                    row.createCell(8).setCellValue(record.getNumberOfLinesModified().get(i));
+                    row.createCell(9).setCellValue(record.getNumberOfFilesModified().get(i));
                 }
             }
         }

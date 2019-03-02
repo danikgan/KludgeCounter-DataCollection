@@ -1,7 +1,7 @@
 import common.AskInputPath;
 import first.AnalysedLink;
 import first.ReadTXTInput;
-import first.Records;
+import first.data.Records;
 import first.SaveGitCommits;
 import first.preprocessing.IdentifyPMD;
 import first.preprocessing.PreviousStatus;
