@@ -13,6 +13,7 @@ import java.io.IOException;
 import static first.analyse.ApplyPMD.setVersionPMD;
 
 public class IdentifyPMD {
+    private boolean pmdFound = false;
     // auto-detecting PMD version within the repository
     public IdentifyPMD() {
         String[] command = {"ls"};
@@ -26,8 +27,13 @@ public class IdentifyPMD {
             while (line != null) {
                 if (line.length()>identifier.length()) {
                     if (line.substring(0,identifier.length()).equals(identifier)) {
-                        new ApplyPMD(); // setting the correct version of PMD to the PMD compiler
-                        setVersionPMD(line.substring(identifier.length()));
+                        if (line.substring(line.length()-4).equals(".zip")) {
+                            System.out.println("This ZIP is redundant: " + line);
+                        } else {
+                            new ApplyPMD(); // setting the correct version of PMD to the PMD compiler
+                            setVersionPMD(line.substring(identifier.length()));
+                            pmdFound = true;
+                        }
                     }
                 }
 
@@ -41,5 +47,11 @@ public class IdentifyPMD {
         }
 
         new DeleteFiles(new File(fileReader));
+    }
+    public boolean isPmdFound() {
+        if (!pmdFound) {
+            System.out.println("*** Error in finding PMD. Please, ensure the latest version of PMD is within the repository.");
+        }
+        return pmdFound;
     }
 }

@@ -15,7 +15,7 @@ public class RetrieveBugzillaDataOverview {
 		for (Tokens tokens:listTokens) {
 			for (String bugzillaReport : tokens.getBugzillaReport_overview()) {
 //				System.out.println("ID: " + tokens.getBugzillaBugs());
-//				System.out.println("R: " + bugzillaReport);
+//				System.out.println("R: " + lsbugzillaReport);
 				bugzillaOverviews.add(analyseJSON(bugzillaReport, project)); // saving the one entry
 			}
 		}
