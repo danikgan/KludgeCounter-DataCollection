@@ -1,7 +1,5 @@
 package second.process.data;
 
-import scala.Int;
-
 import java.util.LinkedList;
 
 public class BugzillaRestOutput {

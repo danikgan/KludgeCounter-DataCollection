@@ -114,7 +114,7 @@ public class GitPMDAnalyser {
 				System.out.println("\n!!! Projects analysed [total number of commits]: ");
 				for (Records record:records) {
 					System.out.println(" - " + record.getProjectName()
-							+ " [" + record.getUniqueAlerts_count().size() + "]");
+							+ " [" + record.getUniqueAlerts_count().size() + 1 + "]");
 //                    if (record.getProjectName().equals(records.getLast().getProjectName())) {
 //                        System.out.println(". ");
 //                    } else {

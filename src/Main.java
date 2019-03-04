@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Main {
 	// Main method
 	public static void main(String[] args) {
-		System.out.println("*** Script v3.4");
+		System.out.println("*** Script v3.4.1");
 		menu();
 	}
 	// asking user how to proceed
@@ -19,7 +19,7 @@ public class Main {
 				"\n2. Use \"" +
 				TemporaryFiles.analysing.OUTPUT_ONE.getString() +
 				"\" for Bugzilla." +
-				"\n3. Delete all temporary files. (USED FOR TESTING)" +
+				"\n3. Delete all temporary files." +
 				"\nPress \'0\' for exit.");
 		try {
 			int answer = scan.nextInt();
