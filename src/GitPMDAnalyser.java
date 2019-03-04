@@ -111,11 +111,13 @@ public class GitPMDAnalyser {
 			if (records.size() > 0) {
 				savingData();
 				// final information printout
-				System.out.println("\n!!! Projects analysed [total number of commits]: ");
+
+
 				for (Records record:records) {
+					int value = record.getUniqueAlerts_count().size()+1;
 					System.out.println(" - " + record.getProjectName()
 							// +1 because there are always -1 unique alerts
-							+ " [" + record.getUniqueAlerts_count().size() + 1 + "]");
+							+ " [" + value + "]");
 				}
 				System.out.println("Saved in Excel file \"" + TemporaryFiles.analysing.OUTPUT_ONE.getString() + "\""
 						+ " in repository \"" + gitPath + "\".");

@@ -106,9 +106,11 @@ public class AnalysedLink {
 		for (String commitNumber:record.getCommitNumber()) {
 			System.out.println(i_temp + ". This checkout: " + commitNumber);
 			// checking for the first iteration
-			if (commitNumber_next.equals("") || commitNumber_next.equals(commitNumber)) {
+			if (commitNumber_next.equals("")) {
 				commitNumber_next = commitNumber;
+//				System.out.println("N:" + commitNumber_next);
 			} else {
+//				System.out.println("N: " + commitNumber_next + " P: " + commitNumber);
 				// if it's not the first iteration
 				// git-diff is in the form of "prevCommit nextCommit" for correct positive information
 				String[] commandGitDiff = {"git", "diff", commitNumber, commitNumber_next};
@@ -120,7 +122,7 @@ public class AnalysedLink {
 				numberOfLinesModified.add(comparePMDandDIFF.getNumberOfLinesModified()); // saving how many lines were edited
 				numberOfFilesModified.add(comparePMDandDIFF.getNumberOfFilesModified()); // saving how many files were edited
 			}
-			// do not more operations on the last commit as it is useless
+			// do not do more operations on the last commit as it is useless
 			if (!commitNumber.equals(record.getCommitNumber().getLast())) { // checking if it's the last commit
 				String[] commandCheckout = {"git", "checkout", commitNumber};
 				new UseTerminal(commandCheckout, fullPath, ""); // fileName zero means no record
