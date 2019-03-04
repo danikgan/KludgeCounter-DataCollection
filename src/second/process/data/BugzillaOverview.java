@@ -9,7 +9,7 @@ public class BugzillaOverview {
 	private String classification;
 	private String component;
 	private String creator;
-	private String creation_date;
+	private String creation_time;
 	private String is_open;
 	private String last_change_time;
 	private String priority;
@@ -91,12 +91,12 @@ public class BugzillaOverview {
 		this.creator = creator;
 	}
 
-	public String getCreation_date() {
-		return creation_date;
+	public String getCreation_time() {
+		return creation_time;
 	}
 
-	public void setCreation_date(String creation_date) {
-		this.creation_date = creation_date;
+	public void setCreation_time(String creation_time) {
+		this.creation_time = creation_time;
 	}
 
 	public String getIs_open() {

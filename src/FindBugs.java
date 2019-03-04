@@ -91,6 +91,8 @@ class FindBugs {
 					new SaveBugzillaHistory(bugzillaRestOutputs, inputPath);
 					System.out.println("\nSaving overviews...");
 					new SaveBugzillaOverview(bugzillaOverviews, inputPath);
+					// finishing
+					closing(bugzillaRestOutputs, bugzillaOverviews, inputPath, projectsData);
 				} catch (Exception e) {
 					System.out.println("*** FindBugs: Error processing projects.");
 					e.printStackTrace();
@@ -179,5 +181,24 @@ class FindBugs {
 			System.out.println("Bugs found: " + tokens.getBugzillaBugs());
 //            System.out.println("Reports found: " + tokens.getBugzillaReport_history());
 		}
+	}
+	private void closing(LinkedList<BugzillaRestOutput> bugzillaRestOutputs,
+						 LinkedList<BugzillaOverview> bugzillaOverviews,
+						 String inputPath,
+						 LinkedList<ProjectsData> projectsData) {
+		System.out.println("\n!!! These projects were analysed: ");
+		for (ProjectsData projectData:projectsData) {
+			System.out.println("\t" + projectData.getProject());
+		}
+		System.out.println("[" + bugzillaOverviews.size() + "] " +
+		"Bugzilla overview records were saved.");
+		int counter = 0;
+		for (BugzillaRestOutput bugzillaRestOutput : bugzillaRestOutputs) {
+			counter += bugzillaRestOutput.getChanges().size();
+		}
+		System.out.println("[" + counter + "] " +
+				"Bugzilla history records were saved.");
+		System.out.println("Saved under: " + inputPath);
+		System.out.println("\nDone.");
 	}
 }

@@ -5,14 +5,13 @@ import common.TemporaryFiles;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import second.process.data.BugzillaOverview;
-import second.process.data.BugzillaRestOutput;
 
 import java.io.IOException;
 import java.util.LinkedList;
 
 public class SaveBugzillaOverview {
 	private String[] columns = { "Project", "Bugzilla ID", "Product", "Assigned To", "CC",
-			"Classification", "Component", "Creator", "Creation Date", "Is Open",
+			"Classification", "Component", "Creator", "Creation Time", "Is Open",
 			"Last Change Time", "Priority", "Resolution", "Severity", "Status",
 			"Summary", "Version"};
 	// constructor
@@ -54,7 +53,7 @@ public class SaveBugzillaOverview {
 			row.createCell(5).setCellValue(bugzillaOverview.getClassification());
 			row.createCell(6).setCellValue(bugzillaOverview.getComponent());
 			row.createCell(7).setCellValue(bugzillaOverview.getCreator());
-			row.createCell(8).setCellValue(bugzillaOverview.getCreation_date());
+			row.createCell(8).setCellValue(bugzillaOverview.getCreation_time());
 			row.createCell(9).setCellValue(bugzillaOverview.getIs_open());
 			row.createCell(10).setCellValue(bugzillaOverview.getLast_change_time());
 			row.createCell(11).setCellValue(bugzillaOverview.getPriority());
