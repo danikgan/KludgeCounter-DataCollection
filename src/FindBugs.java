@@ -188,17 +188,19 @@ class FindBugs {
 						 LinkedList<ProjectsData> projectsData) {
 		System.out.println("\n!!! These projects were analysed: ");
 		for (ProjectsData projectData:projectsData) {
-			System.out.println("\t" + projectData.getProject());
+			System.out.println("\t - " + projectData.getProject());
 		}
 		System.out.println("[" + bugzillaOverviews.size() + "] " +
-		"Bugzilla overview records were saved.");
+		"Bugzilla overview records were saved in \""
+				+ TemporaryFiles.analysing.OUTPUT_THREE.getString() + "\".");
 		int counter = 0;
 		for (BugzillaRestOutput bugzillaRestOutput : bugzillaRestOutputs) {
 			counter += bugzillaRestOutput.getChanges().size();
 		}
 		System.out.println("[" + counter + "] " +
-				"Bugzilla history records were saved.");
-		System.out.println("Saved under: " + inputPath);
+				"Bugzilla history records were saved in \""
+				+ TemporaryFiles.analysing.OUTPUT_TWO.getString() + "\".");
+		System.out.println("Saved under \"" + inputPath + "\".");
 		System.out.println("\nDone.");
 	}
 }
