@@ -113,7 +113,8 @@ public class AnalysedLink {
 //				System.out.println("N: " + commitNumber_next + " P: " + commitNumber);
 				// if it's not the first iteration
 				// git-diff is in the form of "prevCommit nextCommit" for correct positive information
-				String[] commandGitDiff = {"git", "diff", commitNumber, commitNumber_next};
+//				String[] commandGitDiff = {"git", "diff", commitNumber, commitNumber_next};
+				String[] commandGitDiff = {"git", "log", "-u", "-1", commitNumber_next};
 				new UseTerminal(commandGitDiff, fullPath, gitDiffTXT_string);
 				// getting unique errors and their count
 				ComparePMDandDIFF comparePMDandDIFF = new ComparePMDandDIFF(fullPath, gitDiffTXT_string, pmdAlertsTXT_string);
