@@ -129,7 +129,7 @@ class FindBugs {
 	}
 	// asking for the path of input
 	private String askInput() {
-		String asking = "\nSpecify the path to the input file, which was the output of the previous operation named as"
+		String asking = "\nSpecify the path to the input file, which was the output of the previous operation named as "
 				+ TemporaryFiles.analysing.OUTPUT_ONE.getString() + ":";
 		return new AskInputPath(asking).getInputPath();
 //        return "/Users/danikgan/Desktop";
