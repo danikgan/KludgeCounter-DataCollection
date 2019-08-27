@@ -14,7 +14,7 @@ There will be created a file named "records.xlsx" upon completion. Any temporary
 
 ##### The root folder contains examples of the correct input file, named "links.txt", and the intended output file, named "records.txt".
 
-## Abstarct
+## Abstract
 
 Pressurized by close deadlines, developers have an incentive to commit quick code implementations instead of proper fixes which require longer development time. This introduces long term quality deteriorations and high maintenance costs, and is commonly known as ”technical debt”. The concept is not new and this paper investigates how quick patches affect long running open-source projects.
 
